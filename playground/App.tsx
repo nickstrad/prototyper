@@ -22,6 +22,10 @@ import {
   TaskManagerApp,
 } from "../prototypes/task-manager/App.tsx"; // R1 task manager
 import { ApiExplorer, exposeApiExplorerHooks } from "./api/ApiExplorer.tsx"; // R3 api explorer
+import {
+  mergeCommands,
+  taskManagerTerminal,
+} from "../prototypes/task-manager/commands.ts"; // R2 commands
 import { makeTasksRuntime } from "../packages/terminal/examples/tasks.ts";
 import { exampleCommands } from "../packages/terminal/examples/tasks-command.ts";
 import { createShell } from "../packages/terminal/shell.ts";
@@ -61,9 +65,17 @@ export function App() {
     const runtime = makeTasksRuntime();
     const term = new Terminal({ cols: 100, rows: 24, convertEol: false });
     term.open(host.current!);
-    const session = attachShell(term, createShell(exampleCommands(runtime)), {
-      banner: BANNER,
-    });
+    // ---- R2 commands ----
+    // The real `tasks` and the standard `db` commands replace R0's in-memory
+    // example `tasks`; they run on a runtime over the same layer the R1
+    // panel uses, so both resolve the workbench's one DatabaseService.
+    const r2 = taskManagerTerminal(playgroundTaskManagerLayer);
+    const session = attachShell(
+      term,
+      createShell(mergeCommands(exampleCommands(runtime), r2.commands)),
+      { banner: BANNER },
+    );
+    // ---- end R2 commands ----
     term.focus();
 
     const client = spawnEngineWorker();
@@ -95,6 +107,7 @@ export function App() {
       session.dispose();
       term.dispose();
       void runtime.dispose();
+      void r2.dispose(); // R2 commands
       delete globalThis.window.__playground;
     };
   }, []);

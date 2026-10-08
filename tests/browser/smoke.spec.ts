@@ -33,8 +33,11 @@ function collectProblems(page: Page) {
 test("terminal: quoted args, jq pipeline, typed failure, history", async ({ page }) => {
   const problems = collectProblems(page);
   await page.goto("/");
-  await expect(page.locator(".xterm-rows")).toContainText("$");
-  await page.locator(".xterm").click();
+  // Several xterms can share the page (DB0/DB1 consoles); scope to the
+  // application terminal.
+  const term = page.getByTestId("terminal");
+  await expect(term.locator(".xterm-rows")).toContainText("$");
+  await term.locator(".xterm").click();
 
   await run(page, "hello Alice");
   await run(page, 'tasks create "Build API"');
@@ -54,8 +57,8 @@ test("terminal: quoted args, jq pipeline, typed failure, history", async ({ page
 
   const text = await terminalText(page);
   expect(text).toContain("Hello, Alice!");
-  expect(text).toContain("created 1: Build API"); // quoted argument intact
-  expect(text).toContain("created 2: Write tests");
+  expect(text).toContain("created 4: Build API"); // quoted argument intact; ids follow the seed
+  expect(text).toContain("created 5: Write tests");
   expect(text).toContain('"Build API"\n"Write tests"'); // | jq rendered
   expect(text).toMatch(/tr a-z A-Z\nA\n/);
   expect(text).toContain("tasks: task 42 not found\n[exit 1]"); // typed failure
