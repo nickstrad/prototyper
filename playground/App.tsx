@@ -15,6 +15,7 @@ import {
   workbenchPersistenceFromUrl,
 } from "../packages/database/sqlite-workbench.tsx"; // D1 workbench
 import { SqliteShellWorkbench } from "../packages/database-editor/sqlite-shell-workbench.tsx"; // DB0 editor
+import { DuckDbHooks } from "../packages/database/duckdb-hooks.tsx"; // D2 duckdb
 import {
   exposeTaskManagerHooks,
   playgroundTaskManagerLayer,
@@ -134,6 +135,9 @@ export function App() {
       {/* ---- DB0 editor ---- */}
       <SqliteShellWorkbench />
       {/* ---- end DB0 editor ---- */}
+      {/* ---- D2 duckdb ---- */}
+      <DuckDbHooks />
+      {/* ---- end D2 duckdb ---- */}
       {/* ---- R1 task manager ---- */}
       <TaskManagerApp
         layer={playgroundTaskManagerLayer}

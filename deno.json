@@ -3,13 +3,14 @@
   "tasks": {
     "start": "deno run main.ts",
     "dev": "deno run -A npm:vite@8.3.3 --host 127.0.0.1 --port 5173 --strictPort",
-    "build": "deno run -A npm:vite@8.3.3 build",
+    "build": "deno task assets:duckdb && deno run -A npm:vite@8.3.3 build",
     "serve:static": "deno run -A jsr:@std/http@1.0.19/file-server dist --host 127.0.0.1 --port 4173",
     "check": "deno fmt --check && deno lint && deno check",
     "test": "deno test --allow-read --allow-write=/tmp --allow-env=PROTOTYPER_REPLAY_PATH",
-    "test:browser": "deno run -A npm:@playwright/test@1.62.0 test",
+    "test:browser": "deno task assets:duckdb && deno run -A npm:@playwright/test@1.62.0 test",
     "test:browser:npx": "npx playwright test",
-    "test:static": "deno task build && PW_TARGET=static deno run -A npm:@playwright/test@1.62.0 test"
+    "test:static": "deno task build && PW_TARGET=static deno run -A npm:@playwright/test@1.62.0 test",
+    "assets:duckdb": "deno run -A scripts/fetch-duckdb-extensions.ts"
   },
   "imports": {
     "effect": "npm:effect@4.0.2",
