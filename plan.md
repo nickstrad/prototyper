@@ -27,6 +27,11 @@ an offset when time matters.
 | 2026-10-07 | POC verdicts folded in (`pocs/README.md`). sqlite3 shell: **feasible with the prebuilt Fiddle**; the same WASM instance exports the full C API, so the browser SQLite service runs on the shell's engine (bridge proven both ways). DuckDB shell: embeds on the shared `AsyncDuckDB`, sharing proven both ways, command set as Q12; `.open` must be blocked; one shell per page; listeners leak per mount. R0 stack and SQLite service: all green; Playwright runs under Deno. **Next: user confirms Q11/Q17/Q18; then dispatch R0.** |
 | 2026-10-07 | User: ship-first tradeoffs are acceptable. Q11, Q15, Q17, Q18 decided on the simplest option (bridge on the Fiddle engine; `opfs-sahpool` with memory fallback, headered mode deferred; vendored snapshot without `-safe -bail`; one DuckDB shell per page, `eh` only, self-hosted extensions). Planning pass and `pocs/` committed and pushed. **Next: dispatch R0.**                                                                                                                                                                |
 
+| 2026-10-07 | R0 dispatched by Twin (orchestrator): brief at
+`agent-work/items/R0/brief.md`, run run-20261007-r0-01, base 48db2128, builder
+Claude Fable 5.1 TUI in tmux session work. **Next: R0 build completes, then
+independent review (Opus high).** |
+
 ## 1. Goal
 
 Deliver a static browser playground in which portable TypeScript application

@@ -20,3 +20,7 @@ coverage/
 agent-work/claims/
 
 # Keep deno.lock tracked for reproducible dependencies.
+
+# Playwright output
+test-results/
+playwright-report/

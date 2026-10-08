@@ -10,7 +10,7 @@ Requires Deno 2 or later.
 deno task start
 ```
 
-To rerun automatically when files change:
+Starts the Vite dev server:
 
 ```sh
 deno task dev
