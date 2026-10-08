@@ -1,0 +1,4 @@
+import type { PrototypeConfig } from "{{PACKAGES}}/core/types.ts";
+export const config = {{CONFIG}} satisfies PrototypeConfig;
+// The host always mounts Database; these are only the optional interfaces.
+export const panels = ["database", ...config.interfaces] as const;

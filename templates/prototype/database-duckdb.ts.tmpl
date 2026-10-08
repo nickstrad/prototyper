@@ -1,0 +1,5 @@
+import { layer } from "{{PACKAGES}}/database/duckdb-service.ts";
+import { schema, seed } from "./schema.ts";
+export { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+/** Browser worker + self-hosted assets; build once per instance. */
+export const databaseLayer = () => layer({ schema, seed, name: "{{NAME}}", persistence: {{PERSISTENCE}} });

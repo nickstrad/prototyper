@@ -1,0 +1,36 @@
+import { useEffect, useState } from "react";
+import { Effect, Fiber, type ManagedRuntime, PubSub } from "effect";
+import { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { listNotes, putNote } from "./application.ts";
+
+/** Host owns runtime and Database editor. This view owns only its subscription. */
+export function App({ runtime }: { runtime: ManagedRuntime.ManagedRuntime<Database, never> }) {
+  const [notes, setNotes] = useState<Awaited<ReturnType<typeof load>>>([]);
+  const [error, setError] = useState("");
+  const load = () => runtime.runPromise(listNotes());
+  useEffect(() => {
+    let active = true;
+    const refresh = () => load().then((rows) => { if (active) setNotes(rows); }, (e) => { if (active) setError(String(e)); });
+    const fiber = runtime.runFork(Effect.gen(function* () {
+      const db = yield* Database;
+      const subscription = yield* db.subscribe;
+      yield* Effect.promise(refresh);
+      yield* PubSub.take(subscription).pipe(Effect.flatMap(() => Effect.promise(refresh)), Effect.forever);
+    }).pipe(Effect.scoped));
+    return () => { active = false; void Effect.runPromise(Fiber.interrupt(fiber)); };
+  }, [runtime]);
+  return <section>
+    <h2>{{NAME}}</h2>
+    <form onSubmit={(event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      void runtime.runPromise(putNote(data.get("id"), data.get("body"))).then(() => setError(""), (e) => setError(String(e)));
+    }}>
+      <label>ID <input name="id" required /></label>
+      <label>Note <input name="body" required /></label>
+      <button type="submit">Save</button>
+    </form>
+    {error && <p role="alert">{error}</p>}
+    <ul>{notes.map((note) => <li key={JSON.stringify(note.id)}>{String(note.id)}: {String(note.body)}</li>)}</ul>
+  </section>;
+}

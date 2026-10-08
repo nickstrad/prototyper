@@ -1,0 +1,5 @@
+import { browserSqliteLayer } from "{{PACKAGES}}/database/sqlite-browser.ts";
+import { schema, seed } from "./schema.ts";
+export { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+/** Build once per instance; share the resulting service with every interface and editor. */
+export const databaseLayer = () => browserSqliteLayer({ schema, seed, persistence: {{PERSISTENCE}} });

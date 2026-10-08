@@ -1,0 +1,20 @@
+import { Effect, Layer, ManagedRuntime } from "effect";
+import { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { nativeLayer } from "./native.ts";
+import { listNotes, putNote, deleteNote } from "./application.ts";
+
+export async function prove() {
+  const runtime = ManagedRuntime.make(Layer.orDie(nativeLayer()));
+  try {
+    await runtime.runPromise(putNote("proof", "first"));
+    if (!(await runtime.runPromise(listNotes())).some((n) => n.id === "proof" && n.body === "first")) throw new Error("create/read failed");
+    await runtime.runPromise(putNote("proof", "updated"));
+    if (!(await runtime.runPromise(listNotes())).some((n) => n.id === "proof" && n.body === "updated")) throw new Error("update failed");
+    await runtime.runPromise(deleteNote("proof"));
+    if ((await runtime.runPromise(listNotes())).some((n) => n.id === "proof")) throw new Error("delete failed");
+    const sql = await runtime.runPromise(Effect.flatMap(Database, (db) => db.execute("SELECT 6 * 7 AS answer")));
+    if (sql.rows[0]?.[0] !== 42) throw new Error("SQL failed");
+    return "{{NAME}}: SQLite CRUD + SQL passed";
+  } finally { await runtime.dispose(); }
+}
+if (import.meta.main) console.log(await prove());

@@ -1,0 +1,15 @@
+# {{NAME}}
+
+Generated notes prototype. `config.ts` selects optional interfaces; Database is
+always present. `database.ts` builds the browser service. Share one instance with
+all adapters and the Database editor, and dispose its scope when closing.
+
+CLI exports `commands(runtime)` for just-bash; API exports `createApi(runtime)`
+for in-process Request/Response; web exports `App({ runtime })`. Only selected
+adapters are emitted. No socket, standalone web page, or registry edit is created.
+
+SQLite also includes `native.ts` and `proof.ts` for a disposable in-memory Deno
+CRUD + SQL proof. Run with the toolkit's `deno.json` via `--config`, as documented
+in `docs/new-prototype.md`. DuckDB uses the browser worker and vendored assets;
+no native DuckDB runner is emitted. Imports point to the generating checkout's
+packages relative to this directory; regenerate if moving outside that layout.

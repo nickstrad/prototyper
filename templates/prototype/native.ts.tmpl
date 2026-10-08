@@ -1,0 +1,5 @@
+import { layer } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { nativeSqliteBackend } from "{{PACKAGES}}/database/native-sqlite.ts";
+import { schema, seed } from "./schema.ts";
+/** In-memory Deno proof backend; browser persistence is configured in database.ts. */
+export const nativeLayer = () => layer({ backend: nativeSqliteBackend(), schema, seed });

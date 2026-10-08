@@ -1,0 +1,18 @@
+import { Effect, type ManagedRuntime } from "effect";
+import { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { command, fail, runEffectCommand } from "{{PACKAGES}}/terminal/effect-command.ts";
+import { databaseCommand } from "{{PACKAGES}}/terminal/commands.ts";
+import { listNotes, putNote, deleteNote, type ListTooLarge, type InvalidInput } from "./application.ts";
+import type { DatabaseError } from "{{PACKAGES}}/core/types.ts";
+export const commands = (runtime: ManagedRuntime.ManagedRuntime<Database, never>) => [
+  command("notes", (args) => {
+    const [verb, id, body] = args;
+    const program: Effect.Effect<unknown, DatabaseError | InvalidInput | ListTooLarge, Database> | undefined = verb === "list" && args.length === 1 ? listNotes()
+      : verb === "put" && args.length === 3 ? putNote(id, body).pipe(Effect.as({ saved: true }))
+      : verb === "delete" && args.length === 2 ? deleteNote(id).pipe(Effect.as({ deleted: true }))
+      : undefined;
+    return program ? runEffectCommand(runtime, program.pipe(Effect.map((v) => JSON.stringify(v) + "\n")), (e) => e.message + "\n")
+      : Promise.resolve(fail("usage: notes list | put ID BODY | delete ID\n", 2));
+  }),
+  databaseCommand(runtime, Effect.service(Database)),
+];

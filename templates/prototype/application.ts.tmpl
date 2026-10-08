@@ -1,0 +1,35 @@
+import { Data, Effect, Schema } from "effect";
+import { Database, sqlString } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { encodeCell } from "{{PACKAGES}}/core/types.ts";
+
+export class InvalidInput extends Data.TaggedError("InvalidInput")<{ readonly message: string }> {}
+export class ListTooLarge extends Data.TaggedError("ListTooLarge")<{ readonly message: string }> {}
+
+// Preserve the supplied text; whitespace is checked, not trimmed from storage.
+const NoteText = Schema.String.check(
+  Schema.isMaxLength(1000),
+  Schema.makeFilter((value: string) => value.trim().length > 0, { message: "text must not be blank" }),
+  Schema.makeFilter((value: string) => !value.includes("\0"), { message: "text must not contain NUL" }),
+  Schema.makeFilter((value: string) => value.isWellFormed(), { message: "text must not contain lone surrogates" }),
+);
+export const NoteId = NoteText;
+export const NoteBody = NoteText;
+const decodeText = (schema: typeof NoteText, field: string, input: unknown) =>
+  Schema.decodeUnknownEffect(schema)(input).pipe(
+    Effect.mapError((error) => new InvalidInput({ message: `${field}: ${error.message}` })),
+  );
+const execute = (sql: string) => Effect.flatMap(Database, (db) => db.execute(sql));
+export const listNotes = () => execute("SELECT id, body FROM notes ORDER BY id").pipe(
+  Effect.flatMap((r) => r.truncated
+    ? Effect.fail(new ListTooLarge({ message: "note list exceeds the database row limit; narrow the query using Database" }))
+    : Effect.succeed(r.rows.map(([id, body]) => ({ id: encodeCell(id), body: encodeCell(body) })))),
+);
+export const putNote = (id: unknown, body: unknown) => Effect.gen(function* () {
+  const key = yield* decodeText(NoteId, "id", id);
+  const value = yield* decodeText(NoteBody, "body", body);
+  return yield* execute(`INSERT INTO notes (id, body) VALUES (${sqlString(key)}, ${sqlString(value)}) ON CONFLICT(id) DO UPDATE SET body = excluded.body`);
+});
+export const deleteNote = (id: unknown) => Effect.gen(function* () {
+  const key = yield* decodeText(NoteId, "id", id);
+  return yield* execute(`DELETE FROM notes WHERE id = ${sqlString(key)}`);
+});

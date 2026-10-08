@@ -1,0 +1,18 @@
+import { Effect, type ManagedRuntime } from "effect";
+import { Database } from "{{PACKAGES}}/database/sqlite-service.ts";
+import { makeApiHandler, route, ok, failure } from "{{PACKAGES}}/api/router.ts";
+import { listNotes, putNote, deleteNote, ListTooLarge, InvalidInput } from "./application.ts";
+import type { DatabaseError } from "{{PACKAGES}}/core/types.ts";
+export const createApi = (runtime: ManagedRuntime.ManagedRuntime<Database, never>) => makeApiHandler<Database, InvalidInput | ListTooLarge | DatabaseError>({
+  runtime,
+  routes: [
+    route("GET", "/notes", () => listNotes().pipe(Effect.map(ok))),
+    route("PUT", "/notes/:id", ({ params, json }) => Effect.gen(function* () {
+      const body = yield* json;
+      yield* putNote(params.id, typeof body === "object" && body !== null && "body" in body ? body.body : undefined);
+      return ok({ saved: true });
+    })),
+    route("DELETE", "/notes/:id", ({ params }) => deleteNote(params.id).pipe(Effect.as(ok({ deleted: true })))),
+  ],
+  mapError: (e) => failure(e._tag === "InvalidInput" ? 400 : 500, e._tag, e.message),
+});
