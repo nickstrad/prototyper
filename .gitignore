@@ -1,0 +1,22 @@
+# Local dependency directories and Deno cache (when DENO_DIR is set locally)
+node_modules/
+.deno/
+deno_dir/
+
+# Build output and test coverage
+dist/
+coverage/
+
+# Local environment files; keep a shareable example
+.env
+.env.*
+!.env.example
+
+# Logs and macOS metadata
+*.log
+.DS_Store
+
+# Ephemeral agent ownership claims; durable progress remains tracked
+agent-work/claims/
+
+# Keep deno.lock tracked for reproducible dependencies.
