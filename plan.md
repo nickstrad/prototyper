@@ -623,3 +623,4 @@ failures can be replayed, and the production assets run through static hosting
 offline. Document unavailable engine capabilities with observed reasons. The
 planning deliverable itself does not assert that any toolkit or demo currently
 runs.
+| 2026-10-08 | R9 landed: commit 6533c35 (adapters/deno/ + tests/native/ + docs/native.md, R9 slice only; landed ~17:55 CDT by orchestrator). Review verdict nits only (Codex gpt-6-astra, review-01; 29 application operations exactly equal, SQL error-semantic equality, separate importability; accepted deviations: SQL diagnostic-prefix difference, conditional D1 request). Nit 1 docs disposal guard fixed pre-landing; nit 2 transport.ts cleanup left as post-landing debt (reviewer non-blocking). Claim released. **Next: R8 review (Codex); R5 fix round (main/Nick call).** |
