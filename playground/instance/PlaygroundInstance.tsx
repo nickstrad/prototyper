@@ -28,6 +28,7 @@ import {
   TaskManagerApp,
 } from "../../prototypes/task-manager/App.tsx"; // R1 task manager
 import { ApiExplorer, exposeApiExplorerHooks } from "../api/ApiExplorer.tsx"; // R3 api explorer
+import { EventAnalyticsWorkbench } from "../../prototypes/event-analytics/App.tsx"; // R6 event analytics
 import {
   mergeCommands,
   taskManagerTerminal,
@@ -190,6 +191,9 @@ export function PlaygroundInstance({ generation }: { generation: number }) {
       {/* ---- DB1 duckdb shell ---- */}
       <DuckDbShellWorkbench />
       {/* ---- end DB1 duckdb shell ---- */}
+      {/* ---- R6 event analytics ---- */}
+      <EventAnalyticsWorkbench />
+      {/* ---- end R6 event analytics ---- */}
       {/* ---- R4 shared-engine editor ---- */}
       <SharedEditor d1={d1} onHooks={onEditorHooks} />
       {/* ---- end R4 shared-engine editor ---- */}
