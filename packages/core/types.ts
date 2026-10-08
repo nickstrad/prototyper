@@ -176,7 +176,7 @@ export type WorkerRequest =
   | {
     readonly family: "exec";
     readonly id: number;
-    readonly op: "tables" | "schema" | "reset" | "export" | "import";
+    readonly op: "tables" | "schema" | "reset" | "export" | "import" | "open"; // "open" admitted by D1 (review M1)
     readonly arg?: unknown;
   }
   /** Complete statement or dot command. */

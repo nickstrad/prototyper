@@ -67,12 +67,14 @@ test("terminal: quoted args, jq pipeline, typed failure, history", async ({ page
   );
   expect(text).toContain("[exit 127]");
 
-  await page.screenshot({ path: `test-results/playground-${target}.png` });
+  await page.screenshot({
+    path: `${process.env.PW_OUT ?? "test-results"}/playground-${target}.png`,
+  });
   console.log(`---- terminal buffer (${target}) ----\n` + text.trimEnd());
   expect(problems, "console errors/warnings and page errors").toEqual([]);
 });
 
-test("engine worker loads the vendored Fiddle module and answers both families", async ({ page }) => {
+test("engine worker loads the vendored Fiddle module and serves both families", async ({ page }) => {
   const problems = collectProblems(page);
   await page.goto("/");
 
@@ -98,26 +100,29 @@ test("engine worker loads the vendored Fiddle module and answers both families",
   expect(wasm.headers()["content-type"]).toContain("application/wasm");
   expect((await wasm.body()).byteLength).toBe(1_435_205);
 
-  // exec family: stubbed in R0, must still answer with a protocol-shaped error.
-  const execError = await page.evaluate(() =>
-    globalThis.window.__playground!.engine.exec("select 1").then(
-      () => null,
-      (e: unknown) => e,
-    )
+  // exec family (D1): structured queries run on the shell's own handle.
+  const selected = await page.evaluate(() =>
+    globalThis.window.__playground!.engine.exec("select 'ok' as v, null as n")
   );
-  expect(execError).toMatchObject({
+  expect(selected).toMatchObject({
+    columns: ["v", "n"],
+    rows: [["ok", null]],
+    changes: 0,
+    schemaChanged: false,
+    truncated: false,
+  });
+  const tables = await page.evaluate(() =>
+    globalThis.window.__playground!.engine.op("tables")
+  );
+  expect(tables.columns).toEqual(["name"]);
+  const badSql = await page.evaluate(() =>
+    globalThis.window.__playground!.engine.exec("select * from no_such_table")
+      .then(() => null, (e: unknown) => e)
+  );
+  expect(badSql).toMatchObject({
     _tag: "DatabaseError",
     operation: "execute",
-  });
-  const tablesError = await page.evaluate(() =>
-    globalThis.window.__playground!.engine.op("tables").then(
-      () => null,
-      (e: unknown) => e,
-    )
-  );
-  expect(tablesError).toMatchObject({
-    _tag: "DatabaseError",
-    operation: "tables",
+    message: expect.stringContaining("no_such_table"),
   });
 
   // shell family: stubbed in R0; emits stderr output and the real prompt.

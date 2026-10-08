@@ -24,3 +24,7 @@ agent-work/claims/
 # Playwright output
 test-results/
 playwright-report/
+
+# Per-builder build/test outputs (plan.md §5 concurrent runs)
+dist-*/
+test-results-*/

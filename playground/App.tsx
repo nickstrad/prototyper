@@ -9,6 +9,11 @@ import {
   type EngineWorkerClient,
   spawnEngineWorker,
 } from "../packages/database/worker-client.ts";
+import {
+  exposeWorkbenchHooks,
+  SqliteWorkbench,
+  workbenchPersistenceFromUrl,
+} from "../packages/database/sqlite-workbench.tsx"; // D1 workbench
 import { makeTasksRuntime } from "../packages/terminal/examples/tasks.ts";
 import { exampleCommands } from "../packages/terminal/examples/tasks-command.ts";
 import { createShell } from "../packages/terminal/shell.ts";
@@ -114,6 +119,12 @@ export function App() {
           {shellLines.join("\n")}
         </pre>
       </section>
+      {/* ---- D1 workbench ---- */}
+      <SqliteWorkbench
+        persistence={workbenchPersistenceFromUrl()}
+        onHooks={exposeWorkbenchHooks}
+      />
+      {/* ---- end D1 workbench ---- */}
     </main>
   );
 }

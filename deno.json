@@ -6,7 +6,7 @@
     "build": "deno run -A npm:vite@8.3.3 build",
     "serve:static": "deno run -A jsr:@std/http@1.0.19/file-server dist --host 127.0.0.1 --port 4173",
     "check": "deno fmt --check && deno lint && deno check",
-    "test": "deno test --allow-env=PROTOTYPER_REPLAY_PATH",
+    "test": "deno test --allow-read --allow-write=/tmp --allow-env=PROTOTYPER_REPLAY_PATH",
     "test:browser": "deno run -A npm:@playwright/test@1.62.0 test",
     "test:browser:npx": "npx playwright test",
     "test:static": "deno task build && PW_TARGET=static deno run -A npm:@playwright/test@1.62.0 test"
@@ -28,13 +28,19 @@
     "fast-check": "npm:fast-check@4.10.2",
     "@playwright/test": "npm:@playwright/test@1.62.0",
     "@std/assert": "jsr:@std/assert@1.0.19",
-    "@std/http": "jsr:@std/http@1.0.19"
+    "@std/http": "jsr:@std/http@1.0.19",
+    "@sqlite.org/sqlite-wasm": "npm:@sqlite.org/sqlite-wasm@3.53.4-build2"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "jsxImportSourceTypes": "@types/react",
-    "lib": ["dom", "dom.iterable", "esnext", "deno.ns"]
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "deno.ns"
+    ]
   },
   "exclude": [
     "dist",

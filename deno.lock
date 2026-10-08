@@ -15,6 +15,7 @@
     "jsr:@std/path@^1.1.1": "1.1.6",
     "jsr:@std/streams@^1.0.10": "1.2.0",
     "npm:@playwright/test@1.62.0": "1.62.0",
+    "npm:@sqlite.org/sqlite-wasm@3.53.4-build2": "3.53.4-build2",
     "npm:@types/react-dom@19.3.0": "19.3.0_@types+react@19.3.0",
     "npm:@types/react@19.3.0": "19.3.0",
     "npm:@vitejs/plugin-react@6.1.2": "6.1.2_vite@8.3.3",
@@ -186,6 +187,9 @@
     },
     "@rolldown/pluginutils@1.0.1": {
       "integrity": "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="
+    },
+    "@sqlite.org/sqlite-wasm@3.53.4-build2": {
+      "integrity": "sha512-kQVArGJA4z7s56Dm8t+eTBXad4LiohuVj9pfgDNOcxa+Ic5xMrWlLPTq6cT0hw5S4MIvtpsraW+B0wD+IPvC7A=="
     },
     "@tokenizer/inflate@0.4.1": {
       "integrity": "sha512-2mAv+8pkG6GIZiF1kNg1jAjh27IDxEPKwdGul3snfztFerfPGI1LjDezZp3i7BElXompqEtPmoPx6c2wgtWsOA==",
@@ -795,6 +799,7 @@
       "jsr:@std/assert@1.0.19",
       "jsr:@std/http@1.0.19",
       "npm:@playwright/test@1.62.0",
+      "npm:@sqlite.org/sqlite-wasm@3.53.4-build2",
       "npm:@types/react-dom@19.3.0",
       "npm:@types/react@19.3.0",
       "npm:@vitejs/plugin-react@6.1.2",
