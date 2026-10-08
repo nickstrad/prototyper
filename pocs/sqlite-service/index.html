@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SQLite service POC</title>
+  </head>
+  <body>
+    <select id="vfs"><option>memory</option><option>opfs-sahpool</option><option>opfs</option><option>opfs-wl</option></select>
+    <button id="open">open</button>
+    <textarea id="sql" rows="4" cols="60">SELECT * FROM sqlite_schema</textarea>
+    <button id="run">run</button>
+    <pre id="out"></pre>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

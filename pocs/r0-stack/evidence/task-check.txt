@@ -1,0 +1,19 @@
+$ deno task check   (deno 2.7.14, 2026-10-08T02:23:56Z, uncommitted pocs/r0-stack)
+Task check deno fmt --check && deno lint && deno check
+Checked 16 files
+Checked 14 files
+Check e2e/terminal.spec.ts
+Check playwright.config.ts
+Check probes/defense_in_depth.ts
+Check src/App.tsx
+Check src/core/runtime.ts
+Check src/core/tasks.ts
+Check src/main.tsx
+Check src/terminal/commands.ts
+Check src/terminal/shell.ts
+Check src/terminal/xterm-adapter.ts
+Check tests/core_test.ts
+Check tests/property_test.ts
+Check tests/shell_test.ts
+Check vite.config.ts
+exit=0

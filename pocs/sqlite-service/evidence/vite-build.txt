@@ -1,0 +1,13 @@
+vite v8.3.3 building client environment for production...
+transforming...
+✓ 225 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                     0.60 kB │ gzip:   0.35 kB
+dist/assets/sqlite3-opfs-async-proxy-Ck-yCayi.js   32.50 kB
+dist/assets/sqlite3-worker1-Dl2aatz3.js           212.52 kB
+dist/assets/worker-BAh8grHg.js                    218.84 kB
+dist/assets/sqlite3-Con_VOcu.wasm                 868.90 kB │ gzip: 407.46 kB
+dist/assets/index-XLyLFwK0.js                      66.64 kB │ gzip:  22.86 kB
+
+✓ built in 189ms

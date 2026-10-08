@@ -14,11 +14,12 @@ implementation slices and executed acceptance checks will be recorded in
 
 Every demo will have deterministic seed data, the selected engine's first-class
 shared `DatabaseEditor`, a short README walkthrough, and automated browser
-verification. It embeds the actual upstream SQLite/DuckDB shell, including real
-`.mode` and `.schema` command handling, against that demo's live database. Reuse
-the same host component with the selected upstream shell binding. Editor
-mutations must be visible through enabled application interfaces. Use reusable
-toolkit components instead of copying terminal/API/editor plumbing.
+verification. It embeds the actual upstream SQLite/DuckDB shell against that
+demo's live database: real `.mode`/`.schema` handling for SQLite, and the DuckDB
+web shell's own command set plus `SHOW TABLES`/`DESCRIBE` for DuckDB (plan.md
+Q12). Reuse the same host component with the selected upstream shell binding.
+Editor mutations must be visible through enabled application interfaces. Use
+reusable toolkit components instead of copying terminal/API/editor plumbing.
 
 R14 builds and verifies a gallery containing all five demos on static hosting.
 Keep actual run/build instructions synchronized with the implemented task

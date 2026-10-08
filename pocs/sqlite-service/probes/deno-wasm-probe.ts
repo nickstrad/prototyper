@@ -1,0 +1,12 @@
+import sqlite3InitModule from "@sqlite.org/sqlite-wasm";
+const sqlite3 = await sqlite3InitModule();
+console.log("version", sqlite3.version.libVersion);
+const db = new sqlite3.oo1.DB(":memory:", "c");
+db.exec("create table t(a integer, b text, c blob, d real); insert into t values (9007199254740993, 'x', x'0102', 1.5), (1, null, null, null)");
+const rows = db.exec({ sql: "select *, 1=1 as bool from t", rowMode: "array", returnValue: "resultRows" , columnNames: []});
+console.log(rows, rows.map(r=>r.map(v=>typeof v)));
+console.log("vfs list", sqlite3.capi.sqlite3_js_vfs_list());
+console.log("bigint enabled", sqlite3.config?.bigIntEnabled, sqlite3.wasm.bigIntEnabled);
+const bytes = sqlite3.capi.sqlite3_js_db_export(db);
+console.log("export bytes", bytes.byteLength);
+db.close();

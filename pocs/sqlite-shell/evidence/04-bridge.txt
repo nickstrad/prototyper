@@ -1,0 +1,451 @@
+# Narrow native bridge: shell and app on the SAME sqlite3* (fiddle_db_handle)
+# init: {
+ "libversion": "3.54.0",
+ "sourceId": "2026-10-05 14:22:13 4bfc6e53a95d710b7f40fa9c80d8cdd1df50d69ed8614e9800f7e6a1ca5a3c29",
+ "pointerSize": 4,
+ "filename": null,
+ "vfs": null,
+ "prompt": "SQLite-3.54 fiddle.sqlite3-> ",
+ "handle": "0",
+ "crossOriginIsolated": false,
+ "sharedArrayBuffer": false,
+ "vfsBeforeShutdown": [
+  "unix-none",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix"
+ ],
+ "vfsList": [
+  "unix-none",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix"
+ ],
+ "opfs": false
+}
+
+## handle before any shell input
+{
+ "handle": "0",
+ "filename": null,
+ "vfs": null,
+ "prompt": "SQLite-3.54 fiddle.sqlite3-> "
+}
+
+### shell: CREATE + INSERT 'from-shell' (fiddle_exec "CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);\nINSERT INTO t(name) VALUES('from-shell');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## handle after shell input + handle-changed events
+{
+ "info": {
+  "handle": "445696",
+  "filename": "/fiddle.sqlite3",
+  "vfs": "unix-none",
+  "prompt": "SQLite-3.54 fiddle.sqlite3-> "
+ },
+ "events": [
+  {
+   "type": "handle-changed",
+   "from": "0",
+   "to": "445696"
+  }
+ ]
+}
+
+## app (raw exports prepare_v2/step/column_*): SELECT * FROM t
+{
+ "columns": [
+  "id",
+  "name"
+ ],
+ "rows": [
+  [
+   1,
+   "from-shell"
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 1,
+ "autocommit": true
+}
+
+## app (raw sqlite3_exec): INSERT 'from-app'
+{
+ "rc": 0,
+ "err": null,
+ "changes": 1,
+ "lastInsertRowid": 2
+}
+
+### input (fiddle_exec ".mode table\n")
+.mode table
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### shell sees app row? (fiddle_exec "SELECT * FROM t;\n")
++----+------------+
+| id |    name    |
++----+------------+
+|  1 | from-shell |
+|  2 | from-app   |
++----+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## enable update hook (change notifications)
+{
+ "on": true
+}
+
+### shell: INSERT + UPDATE (fiddle_exec "INSERT INTO t(name) VALUES('shell-2'); UPDATE t SET name='shell-2b' WHERE name='shell-2';\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## change events received from update hook
+[
+ {
+  "type": "change",
+  "op": "INSERT",
+  "db": "main",
+  "table": "t",
+  "rowid": "3"
+ },
+ {
+  "type": "change",
+  "op": "UPDATE",
+  "db": "main",
+  "table": "t",
+  "rowid": "3"
+ }
+]
+
+## UPSTREAM BUG probe: capi.sqlite3_bind_text(pStmt,1,'x',...) in this trunk build
+{
+ "threw": "ReferenceError: pMem is not defined"
+}
+
+## app sees shell-2b? (bound param)
+{
+ "columns": [
+  "id",
+  "name"
+ ],
+ "rows": [
+  [
+   3,
+   "shell-2b"
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 3,
+ "autocommit": true
+}
+
+### shell switches to json mode (fiddle_exec ".mode json\n")
+.mode json
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## app query unaffected by shell .mode json
+{
+ "columns": [
+  "n",
+  "max_id"
+ ],
+ "rows": [
+  [
+   3,
+   3
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 3,
+ "autocommit": true
+}
+
+### shell still json after app query (fiddle_exec "SELECT * FROM t;\n")
+[{"id":1,"name":"from-shell"},
+{"id":2,"name":"from-app"},
+{"id":3,"name":"shell-2b"}]
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## types round-trip
+{
+ "columns": [
+  "big",
+  "small",
+  "real",
+  "nul",
+  "blb",
+  "txt"
+ ],
+ "rows": [
+  [
+   "9007199254740993n",
+   -42,
+   1.5,
+   null,
+   {
+    "Uint8Array": [
+     0,
+     255,
+     16
+    ]
+   },
+   "héllo"
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 3,
+ "autocommit": true
+}
+
+## oo1.DB.wrapHandle path (bundled JS API, non-owning)
+{
+ "columns": [
+  "id",
+  "name"
+ ],
+ "rows": [
+  [
+   1,
+   "from-shell"
+  ],
+  [
+   2,
+   "from-app"
+  ],
+  [
+   3,
+   "shell-2b"
+  ]
+ ],
+ "changes": 1
+}
+
+## multi-statement app call + changes
+{
+ "columns": [
+  "n"
+ ],
+ "rows": [
+  [
+   4
+  ]
+ ],
+ "statements": 3,
+ "changes": 1,
+ "totalChangesDelta": 3,
+ "lastInsertRowid": 5,
+ "autocommit": true
+}
+
+## app error is structured, not shell text
+{
+ "error": "prepare rc=1: no such table: nope"
+}
+
+### shell: BEGIN + INSERT (no COMMIT) (fiddle_exec "BEGIN; INSERT INTO t(name) VALUES('uncommitted');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## app sees uncommitted shell row (same connection) + autocommit flag
+{
+ "columns": [
+  "name"
+ ],
+ "rows": [
+  [
+   "uncommitted"
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 6,
+ "autocommit": false
+}
+
+### input (fiddle_exec "ROLLBACK;\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## after shell ROLLBACK
+{
+ "columns": [
+  "n"
+ ],
+ "rows": [
+  [
+   0
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 6,
+ "autocommit": true
+}
+
+## export (sqlite3_js_db_export on shell handle)
+{
+ "filename": "/fiddle.sqlite3",
+ "size": 16384,
+ "header": "SQLite format 3"
+}
+
+## reset (fiddle_reset_db)
+{
+ "handle": "445696",
+ "filename": "/fiddle.sqlite3"
+}
+
+### shell after reset (fiddle_exec ".tables\n")
+.tables
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## app after reset
+{
+ "columns": [
+  "name"
+ ],
+ "rows": [],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 6,
+ "autocommit": true
+}
+
+## import via sqlite3_deserialize into SAME handle
+{
+ "handle": "445696",
+ "filename": "",
+ "vfs": "memdb"
+}
+
+### input (fiddle_exec ".mode table\n")
+.mode table
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### shell after deserialize-import (fiddle_exec "SELECT * FROM t;\n")
++----+------------+
+| id |    name    |
++----+------------+
+|  1 | from-shell |
+|  2 | from-app   |
+|  3 | shell-2b   |
+|  5 | a2         |
++----+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## app after deserialize-import + handle events
+{
+ "q": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    4
+   ]
+  ],
+  "statements": 1,
+  "changes": 0,
+  "totalChangesDelta": 0,
+  "lastInsertRowid": 6,
+  "autocommit": true
+ },
+ "info": {
+  "handle": "445696",
+  "filename": "",
+  "vfs": "memdb",
+  "prompt": "SQLite-3.54 fiddle.sqlite3-> "
+ },
+ "events": [
+  {
+   "type": "handle-changed",
+   "from": "0",
+   "to": "445696"
+  }
+ ]
+}
+
+### shell write after deserialize (MEMDB) (fiddle_exec "INSERT INTO t(name) VALUES('post-import-shell');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## app sees it
+{
+ "columns": [
+  "name"
+ ],
+ "rows": [
+  [
+   "post-import-shell"
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 6,
+ "autocommit": true
+}
+
+### shell .open :memory: (replaces the connection) (fiddle_exec ".open :memory:\n")
+.open :memory:
+
+[prompt after: "SQLite-3.54 memory-> "]
+
+## handle after .open :memory: (app follows fiddle_db_handle)
+{
+ "info": {
+  "handle": "681352",
+  "filename": "",
+  "vfs": "unix-none",
+  "prompt": "SQLite-3.54 memory-> "
+ },
+ "events": [
+  {
+   "type": "handle-changed",
+   "from": "0",
+   "to": "445696"
+  },
+  {
+   "type": "handle-changed",
+   "from": "445696",
+   "to": "681352"
+  }
+ ],
+ "tables": {
+  "columns": [
+   "name"
+  ],
+  "rows": [],
+  "statements": 1,
+  "changes": 0,
+  "totalChangesDelta": 0,
+  "lastInsertRowid": 0,
+  "autocommit": true
+ }
+}
+
+## update hook re-installed on new handle? insert via app
+{
+ "ERROR": "page.evaluate: Error: step rc=8: attempt to write a readonly database"
+}
+

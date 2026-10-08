@@ -1,0 +1,11 @@
+version 3.53.4
+[
+  [ 9007199254740993n, "x", Uint8Array(2) [ 1, 2 ], 1.5, 1 ],
+  [ 1, null, null, null, 1 ]
+] [
+  [ "bigint", "string", "object", "number", "number" ],
+  [ "number", "object", "object", "object", "number" ]
+]
+vfs list [ "unix-none", "memdb", "kvvfs", "unix-excl", "unix-dotfile", "unix" ]
+bigint enabled true true
+export bytes 16384

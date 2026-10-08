@@ -1,0 +1,9 @@
+# fiddle-module.js loaded via <script> on the main thread
+{
+ "rc": 0,
+ "lines": [
+  ".mode csv",
+  "main-thread\r"
+ ],
+ "inWorker": false
+}

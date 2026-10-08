@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>main-thread probe</title></head>
+<body><pre id="out"></pre>
+<script src="../vendor/fiddle/fiddle-module.js"></script>
+<script>
+// Probe: can the upstream Fiddle module run on the main thread (no Worker)?
+window.probe = (async () => {
+  const lines = [];
+  const s = await sqlite3InitModule({ print: (...a) => lines.push(a.join(" ")), printErr: (...a) => lines.push("[stderr] " + a.join(" ")),
+    locateFile: (p) => "../vendor/fiddle/" + p });
+  s.capi.sqlite3_shutdown();
+  const argv = ["sqlite3-fiddle.wasm", "/fiddle.sqlite3"];
+  const rc = s.wasm.exports.fiddle_main(argv.length, s.wasm.allocMainArgv(argv));
+  const exec = s.wasm.xWrap("fiddle_exec", undefined, ["string"]);
+  exec("CREATE TABLE t(a); INSERT INTO t VALUES('main-thread');");
+  exec(".mode csv");
+  exec("SELECT * FROM t;");
+  document.getElementById("out").textContent = lines.join("\n");
+  return { rc, lines, inWorker: typeof WorkerGlobalScope !== "undefined" };
+})();
+</script></body></html>

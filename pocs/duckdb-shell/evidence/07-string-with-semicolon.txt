@@ -1,0 +1,11 @@
+# input:
+#   SELECT 'a;b' AS s, length('x;y;z') AS len;
+# output:
+duckdb> SELECT 'a;b' AS s, length('x;y;z') AS len;
+┌─────┬─────┐
+│ s   ┆ len │
+╞═════╪═════╡
+│ a;b ┆   5 │
+└─────┴─────┘
+
+duckdb> 

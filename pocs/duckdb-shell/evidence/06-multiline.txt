@@ -1,0 +1,22 @@
+# input:
+#   SELECT kind,
+#     count(*) AS n
+#   FROM events
+#   GROUP BY kind
+#   ORDER BY kind;
+# output:
+duckdb> SELECT kind,
+   ...>   count(*) AS n
+   ...> FROM events
+   ...> GROUP BY kind
+   ...> ORDER BY kind;
+┌──────────┬───┐
+│ kind     ┆ n │
+╞══════════╪═══╡
+│ login    ┆ 2 │
+│ logout   ┆ 1 │
+│ purchase ┆ 1 │
+│ signup   ┆ 1 │
+└──────────┴───┘
+
+duckdb> 

@@ -1,0 +1,2 @@
+node:sqlite :memory: {"tag":"DatabaseError","op":"import","msg":"unable to open database: /var/folders/bh/gj52slt51639d18cgb918pcr0000gn/T/f8f7272b296978a3.sqlite"} after: [[3]]
+sqlite-wasm memory (Deno) {"tag":"DatabaseError","op":"import","msg":"SQLITE_CORRUPT: sqlite3 result code 11: database disk image is malformed"} after: [[3]]

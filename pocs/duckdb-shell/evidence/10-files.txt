@@ -1,0 +1,11 @@
+# input:
+#   .files
+#   .files list
+# output:
+duckdb> .files
+No files registered
+
+duckdb> .files list
+No files registered
+
+duckdb> 

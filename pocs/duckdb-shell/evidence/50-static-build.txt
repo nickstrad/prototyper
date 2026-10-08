@@ -1,0 +1,127 @@
+# BASE=http://localhost:5183/
+
+status: duckdb v1.4.3 bundle=eh crossOriginIsolated=false path=:memory:
+
+requests:
+200 text/html / 709B
+200 text/css /assets/index-Dieqgwuu.css 3927B
+200 text/javascript /assets/index-CqBhiTK6.js 605055B
+200 text/javascript /assets/duckdb-browser-eh.worker-hQa-dcAV.js 772759B
+200 application/wasm /assets/duckdb-eh-9ubY-jlA.wasm 34242586B
+200 application/wasm /assets/shell_bg-C6o4U8dR.wasm 1523529B
+
+banner:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 
+
+duckdb> SELECT * FROM events ORDER BY id;
+┌────┬──────────┬─────────────────────┐
+│ id ┆ kind     ┆ ts                  │
+╞════╪══════════╪═════════════════════╡
+│  1 ┆ signup   ┆ 2024-01-01T09:00:00 │
+│  2 ┆ login    ┆ 2024-01-01T09:05:00 │
+│  3 ┆ purchase ┆ 2024-01-02T12:30:00 │
+│  4 ┆ login    ┆ 2024-01-03T08:15:00 │
+│  5 ┆ logout   ┆ 2024-01-03T18:45:00 │
+└────┴──────────┴─────────────────────┘
+
+duckdb> 
+
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            6 │
+└──────────────┘
+
+duckdb> INSERT INTO events VALUES (7, 'static_shell_write', NULL);
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> 
+
+app sees: [{"id":6,"kind":"static_app_write"},{"id":7,"kind":"static_shell_write"}]
+
+duckdb> SELECT to_json({'a': 1}) AS j;
+┌─────────┐
+│ j       │
+╞═════════╡
+│ {"a":1} │
+└─────────┘
+
+duckdb> COPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);
+┌───────┐
+│ Count │
+╞═══════╡
+│     7 │
+└───────┘
+
+duckdb> SELECT count(*) FROM 'e.parquet';
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            7 │
+└──────────────┘
+
+duckdb> 
+
+requests made by json/parquet statements (extension autoload?):
+200 application/wasm https://extensions.duckdb.org/v1.4.3/wasm_eh/json.duckdb_extension.wasm ?B
+200 application/wasm https://extensions.duckdb.org/v1.4.3/wasm_eh/parquet.duckdb_extension.wasm ?B
+
+OFFLINE (non-origin requests aborted):
+duckdb> SELECT to_json({'a': 1}) AS j;
+table index is out of bounds
+
+duckdb> COPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);
+function signature mismatch
+
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            5 │
+└──────────────┘
+
+duckdb> 
+
+OFFLINE + self-hosted extensions (?ext=local):
+duckdb> SELECT to_json({'a': 1}) AS j;
+┌─────────┐
+│ j       │
+╞═════════╡
+│ {"a":1} │
+└─────────┘
+
+duckdb> COPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);
+┌───────┐
+│ Count │
+╞═══════╡
+│     5 │
+└───────┘
+
+duckdb> SELECT count(*) FROM 'e.parquet';
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            5 │
+└──────────────┘
+
+duckdb> 
+
+extension requests:
+http://localhost:5183/duckdb-extensions/v1.4.3/wasm_eh/json.duckdb_extension.wasm
+http://localhost:5183/duckdb-extensions/v1.4.3/wasm_eh/parquet.duckdb_extension.wasm
+
+console:
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[warning] Buffering missing file: e.parquet

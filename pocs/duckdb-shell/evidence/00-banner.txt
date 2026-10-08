@@ -1,0 +1,9 @@
+# env: {"bundle":"eh","version":"v1.4.3","crossOriginIsolated":false}
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 

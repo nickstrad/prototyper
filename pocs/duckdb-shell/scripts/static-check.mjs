@@ -1,0 +1,32 @@
+// Step 6: the production build served by a plain static file server, no backend.
+import { writeFileSync } from "node:fs";
+import { launch, open, run, text, BASE } from "./lib.mjs";
+const { browser, page, logs } = await launch();
+const reqs = [];
+page.on("response", async (r) => { reqs.push(`${r.status()} ${r.headers()["content-type"] ?? "-"} ${r.url().replace(BASE, "/")} ${r.headers()["content-length"] ?? "?"}B`); });
+await open(page);
+const out = [`# BASE=${BASE}`, `status: ${await page.textContent("#status")}`, "requests:\n" + reqs.join("\n")];
+out.push("banner:\n" + (await text(page)));
+out.push(await run(page, "SELECT * FROM events ORDER BY id;"));
+await page.evaluate(() => window.poc.appQuery("INSERT INTO events VALUES (6, 'static_app_write', NULL)"));
+out.push(await run(page, "SELECT count(*) FROM events;\nINSERT INTO events VALUES (7, 'static_shell_write', NULL);"));
+out.push("app sees: " + JSON.stringify(await page.evaluate(() => window.poc.appQuery("SELECT id, kind FROM events WHERE id >= 6 ORDER BY id"))));
+const n = reqs.length;
+out.push(await run(page, "SELECT to_json({'a': 1}) AS j;\nCOPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);\nSELECT count(*) FROM 'e.parquet';"));
+out.push("requests made by json/parquet statements (extension autoload?):\n" + (reqs.slice(n).join("\n") || "(none)"));
+// Offline: block every non-origin request and retry a statement needing an autoloaded extension.
+const page2 = await page.context().newPage();
+await page2.route((u) => !u.href.startsWith(BASE), (r) => r.abort());
+await open(page2);
+out.push("OFFLINE (non-origin requests aborted):\n" + (await run(page2, "SELECT to_json({'a': 1}) AS j;\nCOPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);\nSELECT count(*) FROM events;")));
+const page3 = await page.context().newPage();
+const p3reqs = [];
+page3.on("request", (r) => p3reqs.push(r.url()));
+await page3.route((u) => !u.href.startsWith(BASE), (r) => r.abort());
+await open(page3, "?ext=local");
+out.push("OFFLINE + self-hosted extensions (?ext=local):\n" + (await run(page3, "SELECT to_json({'a': 1}) AS j;\nCOPY (SELECT * FROM events) TO 'e.parquet' (FORMAT parquet);\nSELECT count(*) FROM 'e.parquet';")));
+out.push("extension requests:\n" + p3reqs.filter((u) => u.includes("extension")).join("\n"));
+out.push("console:\n" + logs.filter((l) => !l.includes("GL Driver")).join("\n"));
+writeFileSync(new URL("../evidence/50-static-build.txt", import.meta.url), out.join("\n\n") + "\n");
+console.log(out.join("\n\n"));
+await browser.close();

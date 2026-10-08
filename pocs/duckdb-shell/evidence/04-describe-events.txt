@@ -1,0 +1,13 @@
+# input:
+#   DESCRIBE events;
+# output:
+duckdb> DESCRIBE events;
+┌─────────────┬─────────────┬──────┬─────┬─────────┬───────┐
+│ column_name ┆ column_type ┆ null ┆ key ┆ default ┆ extra │
+╞═════════════╪═════════════╪══════╪═════╪═════════╪═══════╡
+│ id          ┆ INTEGER     ┆ YES  ┆     ┆         ┆       │
+│ kind        ┆ VARCHAR     ┆ YES  ┆     ┆         ┆       │
+│ ts          ┆ TIMESTAMP   ┆ YES  ┆     ┆         ┆       │
+└─────────────┴─────────────┴──────┴─────┴─────────┴───────┘
+
+duckdb> 

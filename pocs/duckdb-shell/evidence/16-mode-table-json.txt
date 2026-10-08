@@ -1,0 +1,15 @@
+# input:
+#   .mode table
+#   .mode json
+#   .mode
+# output:
+duckdb> .mode table
+Unknown command: .mode
+
+duckdb> .mode json
+Unknown command: .mode
+
+duckdb> .mode
+Unknown command: .mode
+
+duckdb> 

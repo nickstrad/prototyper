@@ -1,0 +1,7 @@
+# input:
+#   .schema
+# output:
+duckdb> .schema
+Unknown command: .schema
+
+duckdb> 

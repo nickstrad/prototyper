@@ -1,0 +1,48 @@
+{
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "dev": "deno run -A npm:vite@8.3.3",
+    "build": "deno run -A npm:vite@8.3.3 build",
+    "serve:static": "deno run -A jsr:@std/http@1/file-server dist --host 127.0.0.1 --port 4173",
+    "check": "deno fmt --check && deno lint && deno check",
+    "test": "deno test --allow-env=POC_FAIL_DEMO,POC_REPLAY_PATH tests/",
+    "test:browser": "deno run -A npm:@playwright/test@1.62.0 test",
+    "test:browser:npx": "npx playwright test",
+    "test:static": "deno task build && PW_TARGET=static deno run -A npm:@playwright/test@1.62.0 test"
+  },
+  "imports": {
+    "effect": "npm:effect@4.0.2",
+    "effect/": "npm:/effect@4.0.2/",
+    "just-bash": "npm:just-bash@3.6.0",
+    "@xterm/xterm": "npm:@xterm/xterm@6.0.0",
+    "@xterm/xterm/": "npm:/@xterm/xterm@6.0.0/",
+    "react": "npm:react@19.3.0",
+    "react/": "npm:/react@19.3.0/",
+    "react-dom": "npm:react-dom@19.3.0",
+    "react-dom/": "npm:/react-dom@19.3.0/",
+    "@types/react": "npm:@types/react@19.3.0",
+    "@types/react-dom": "npm:@types/react-dom@19.3.0",
+    "vite": "npm:vite@8.3.3",
+    "@vitejs/plugin-react": "npm:@vitejs/plugin-react@6.1.2",
+    "fast-check": "npm:fast-check@4.10.2",
+    "@playwright/test": "npm:@playwright/test@1.62.0",
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "jsxImportSourceTypes": "@types/react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "deno.ns"
+    ]
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test-results",
+    "playwright-report"
+  ]
+}

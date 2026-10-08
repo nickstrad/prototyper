@@ -1,0 +1,77 @@
+{
+ "url": "http://localhost:5174/",
+ "result": {
+  "probe": {
+   "libVersion": "3.53.4",
+   "vfsList": [
+    "unix-none",
+    "memdb",
+    "kvvfs",
+    "unix-excl",
+    "unix-dotfile",
+    "unix"
+   ],
+   "vfsFind": {
+    "opfs": false,
+    "opfs-wl": false,
+    "opfs-sahpool": false,
+    "kvvfs": true
+   },
+   "hasOpfsNamespace": false,
+   "oo1Keys": [
+    "DB",
+    "Stmt",
+    "JsStorageDb"
+   ],
+   "installOpfsSAHPoolVfs": "function",
+   "crossOriginIsolated": false,
+   "sharedArrayBuffer": "undefined",
+   "atomicsWaitAsync": "function",
+   "opfsGetDirectory": "function",
+   "createSyncAccessHandle": "function",
+   "bigIntEnabled": true,
+   "openWithVfsOpfs": {
+    "ok": false,
+    "error": {
+     "name": "SQLite3Error",
+     "message": "SQLITE_ERROR: sqlite3 result code 1: no such vfs: opfs",
+     "resultCode": 1
+    }
+   },
+   "logs": []
+  },
+  "memory": {
+   "vfs": "memory",
+   "filename": ":memory:",
+   "dbVfsName": "unix-none"
+  },
+  "select": {
+   "columns": [
+    "v",
+    "big"
+   ],
+   "rows": [
+    [
+     "3.53.4",
+     {
+      "$type": "bigint",
+      "value": "9007199254740993"
+     }
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  },
+  "sahpool": {
+   "vfs": "opfs-sahpool",
+   "filename": "/dev.sqlite3",
+   "dbVfsName": "opfs-sahpool"
+  }
+ },
+ "logs": [
+  "debug: [vite] connecting...",
+  "debug: [vite] connected.",
+  "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+ ]
+}

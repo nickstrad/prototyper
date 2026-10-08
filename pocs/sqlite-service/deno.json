@@ -1,0 +1,16 @@
+{
+  "nodeModulesDir": "manual",
+  "imports": {
+    "effect": "npm:effect@4.0.2",
+    "@sqlite.org/sqlite-wasm": "npm:@sqlite.org/sqlite-wasm@3.53.4-build2",
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "tasks": {
+    "test": "deno test -A tests/",
+    "check": "deno check src/service.ts src/node-driver.ts src/wasm-driver-deno.ts src/node-sqlite-exec.ts tests/"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,0 +1,40 @@
+Experiment (scratchpad copy of this POC, executed 2026-10-07):
+1) deno.json nodeModulesDir "none", plain vite.config (react plugin only):
+   $ deno task build
+   -> FAILED: vite.config.ts [UNRESOLVED_IMPORT] Could not resolve 'vite' / '@vitejs/plugin-react'
+      (Vite bundles the config with rolldown, which needs node_modules.)
+2) nodeModulesDir "none" + plugins [deno(), react()] from @deno/vite-plugin@2.0.4:
+   $ deno run -A npm:vite@8.3.3 build --configLoader native
+   -> exit 0, BUT just-bash resolved to the NODE bundle (dist/bundle/index.js, not the
+      "browser" export), so Vite externalized these node: builtins (count of warnings):
+       201 node:module
+        35 node:assert
+        18 node:stream
+        17 node:buffer
+        12 node:crypto
+        11 node:util
+         9 node:async_hooks
+         9 node:events
+         7 node:zlib
+         6 node:net
+         5 node:fs
+         5 node:path
+         5 node:worker_threads
+         5 node:url
+         4 node:http
+         3 node:os
+         3 node:util/types
+         2 node:dns
+         2 node:fs/promises
+         2 node:stream/promises
+         2 node:tls
+         2 node:diagnostics_channel
+         2 node:sqlite
+         1 node:dns/promises
+         1 node:querystring
+         1 node:console
+         1 node:timers
+         1 node:perf_hooks
+   Not served/tested further: an app bundle with ~28 externalized node builtins is not a valid browser build.
+3) nodeModulesDir "auto", plain Vite (no @deno/vite-plugin) -- the configuration in this POC:
+   -> just-bash resolves its "browser" export; only node:zlib (gzip/gunzip/zcat) is externalized. See build-output.txt.

@@ -5,7 +5,8 @@ model: sonnet
 effort: high
 ---
 
-Codex: run this role on `luna` at high effort (plan.md §10c).
+Claude: Sonnet 5.5 at high effort. Codex: run this role on `luna` at high effort
+(plan.md §10c).
 
 You build one work item of the browser prototyping toolkit. The brief you
 receive is self-contained: the assigned item row, the signatures you implement

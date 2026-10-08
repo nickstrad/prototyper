@@ -1,0 +1,49 @@
+# typed via Playwright keyboard into xterm, linebuf=complete
+SQLite-3.54 fiddle.sqlite3-> CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);
+SQLite-3.54 fiddle.sqlite3-> INSERT INTO t(name) VALUES('from-shell');
+SQLite-3.54 fiddle.sqlite3-> .mode box
+.mode box
+
+SQLite-3.54 fiddle.sqlite3-> SELECT * FROM t;
+╭────┬────────────╮
+│ id │    name    │
+╞════╪════════════╡
+│  1 │ from-shell │
+╰────┴────────────╯
+SQLite-3.54 fiddle.sqlite3-> .tables
+.tables
+
+t
+SQLite-3.54 fiddle.sqlite3-> SELECT 1
+   ...> ;
+╭───╮
+│ 1 │
+╞═══╡
+│ 1 │
+╰───╯
+SQLite-3.54 fiddle.sqlite3-> SELECT id,
+   ...>        name
+   ...>   FROM t;
+╭────┬────────────╮
+│ id │    name    │
+╞════╪════════════╡
+│  1 │ from-shell │
+╰────┴────────────╯
+SQLite-3.54 fiddle.sqlite3-> INSERT INTO t(name) VALUES('a;
+   ...> b');
+SQLite-3.54 fiddle.sqlite3-> SELECT name FROM t WHERE id = 2;
+╭──────╮
+│ name │
+╞══════╡
+│ a;   │
+│ b    │
+╰──────╯
+SQLite-3.54 fiddle.sqlite3-> SELECT * FROM nope;
+Parse error near line 1: no such table: nope
+SQLite-3.54 fiddle.sqlite3-> SELECT 'ok after error';
+╭──────────────────╮
+│ 'ok after error' │
+╞══════════════════╡
+│ ok after error   │
+╰──────────────────╯
+SQLite-3.54 fiddle.sqlite3-> 

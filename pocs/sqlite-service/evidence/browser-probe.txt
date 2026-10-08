@@ -1,0 +1,2048 @@
+== plain: probe
+{
+ "pageCrossOriginIsolated": false,
+ "worker": [
+  {
+   "op": "probe",
+   "ok": true,
+   "result": {
+    "libVersion": "3.53.4",
+    "vfsList": [
+     "unix-none",
+     "memdb",
+     "kvvfs",
+     "unix-excl",
+     "unix-dotfile",
+     "unix"
+    ],
+    "vfsFind": {
+     "opfs": false,
+     "opfs-wl": false,
+     "opfs-sahpool": false,
+     "kvvfs": true
+    },
+    "hasOpfsNamespace": false,
+    "oo1Keys": [
+     "DB",
+     "Stmt",
+     "JsStorageDb"
+    ],
+    "installOpfsSAHPoolVfs": "function",
+    "crossOriginIsolated": false,
+    "sharedArrayBuffer": "undefined",
+    "atomicsWaitAsync": "function",
+    "opfsGetDirectory": "function",
+    "createSyncAccessHandle": "function",
+    "bigIntEnabled": true,
+    "openWithVfsOpfs": {
+     "ok": false,
+     "error": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: no such vfs: opfs",
+      "resultCode": 1
+     }
+    },
+    "logs": []
+   }
+  }
+ ]
+}
+== plain: memory
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "memory",
+   "filename": ":memory:",
+   "dbVfsName": "unix-none"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "i",
+    "big",
+    "b",
+    "r",
+    "n",
+    "bool",
+    "t"
+   ],
+   "rows": [
+    [
+     42,
+     {
+      "$type": "bigint",
+      "value": "9007199254740993"
+     },
+     {
+      "$type": "blob",
+      "base64": "AP8Q"
+     },
+     1.5,
+     null,
+     1,
+     "héllo"
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "SQLite3Error",
+   "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+   "info": {
+    "name": "SQLite3Error",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "resultCode": 1
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "id",
+    "title",
+    "completed",
+    "created_at"
+   ],
+   "rows": [
+    [
+     1,
+     "seed",
+     0,
+     "2026-01-01"
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ }
+]
+== plain: opfs-sahpool write
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-sahpool",
+   "filename": "/reload-opfs-sahpool.sqlite3",
+   "dbVfsName": "opfs-sahpool"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "count(*)"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: opfs write
+[
+ {
+  "op": "open",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)",
+   "info": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: opfs-wl write
+[
+ {
+  "op": "open",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)",
+   "info": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: opfs-sahpool after reload
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-sahpool",
+   "filename": "/reload-opfs-sahpool.sqlite3",
+   "dbVfsName": "opfs-sahpool"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "n"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: opfs after reload
+[
+ {
+  "op": "open",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)",
+   "info": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: opfs-wl after reload
+[
+ {
+  "op": "open",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)",
+   "info": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)"
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "Error",
+   "message": "no open database",
+   "info": {
+    "name": "Error",
+    "message": "no open database"
+   }
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== plain: sahpool two tabs
+{
+ "A_open": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/multi.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  }
+ ],
+ "B_install": [
+  {
+   "op": "installSahpool",
+   "ok": false,
+   "error": {
+    "name": "NoModificationAllowedError",
+    "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.",
+    "info": {
+     "name": "NoModificationAllowedError",
+     "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file."
+    }
+   }
+  }
+ ],
+ "B_open": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "NoModificationAllowedError",
+    "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.",
+    "info": {
+     "name": "NoModificationAllowedError",
+     "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable strea
+== plain: opfs two tabs
+{
+ "A": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)",
+    "info": {
+     "name": "Error",
+     "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)"
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ],
+ "B": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)",
+    "info": {
+     "name": "Error",
+     "message": "sqlite3.oo1.OpfsDb is not available (VFS not installed)"
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ],
+ "A_sees_B": [
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ]
+}
+== plain: opfs-wl two tabs
+{
+ "A": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)",
+    "info": {
+     "name": "Error",
+     "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)"
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ],
+ "B": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)",
+    "info": {
+     "name": "Error",
+     "message": "sqlite3.oo1.OpfsWlDb is not available (VFS not installed)"
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ],
+ "A_sees_B": [
+  {
+   "op": "exec",
+   "ok": false,
+   "error": {
+    "name": "Error",
+    "message": "no open database",
+    "info": {
+     "name": "Error",
+     "message": "no open database"
+    }
+   }
+  }
+ ]
+}
+== plain: export/import memory
+{
+ "src": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "memory",
+    "filename": ":memory:",
+    "dbVfsName": "unix-none"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  },
+  {
+   "op": "export",
+   "ok": true,
+   "bytes": 16384,
+   "savedAs": "export2",
+   "header": "SQLite format 3"
+  }
+ ],
+ "importFresh": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "memory",
+    "filename": ":memory:",
+    "dbVfsName": "memdb"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "title"
+    ],
+    "rows": [
+     [
+      "seed"
+     ],
+     [
+      "second"
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "importLive": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "op": "importLive",
+   "ok": true,
+   "result": {
+    "importResult": "sqlite3_deserialize on live handle",
+    "sameHandleRead": {
+     "columns": [
+      "count(*)"
+     ],
+     "rows": [
+      [
+       2
+      ]
+     ],
+     "changes": 0,
+     "schemaChanged": false,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "count(*)"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schema
+== plain: export/import opfs-sahpool
+{
+ "src": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/xsrc.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  },
+  {
+   "op": "export",
+   "ok": true,
+   "bytes": 16384,
+   "savedAs": "export2",
+   "header": "SQLite format 3"
+  }
+ ],
+ "importFresh": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/xdst.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "title"
+    ],
+    "rows": [
+     [
+      "seed"
+     ],
+     [
+      "second"
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "importLive": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "op": "importLive",
+   "ok": true,
+   "result": {
+    "importResult": 16384,
+    "sameHandleRead": {
+     "columns": [
+      "count(*)"
+     ],
+     "rows": [
+      [
+       2
+      ]
+     ],
+     "changes": 0,
+     "schemaChanged": false,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "count(*)"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schem
+== plain: effect service memory
+{
+ "label": "sqlite-wasm memory (worker)",
+ "results": [
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Failure",
+   "failure": {
+    "operation": "execute",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "cause": {
+     "info": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+      "resultCode": 1
+     },
+     "name": "SQLite3Error"
+    },
+    "_tag": "DatabaseError"
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      4
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "afterReset": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    3
+   ]
+  ],
+  "changes": 0,
+  "schemaChanged": false,
+  "truncated": false
+ },
+ "events": [
+  {
+   "_tag": "Changed",
+   "changes": 1,
+   "schemaChanged": false
+  },
+  {
+   "_tag": "Reset"
+  }
+ ],
+ "closes": 2
+}
+== plain: effect service opfs-sahpool
+{
+ "label": "sqlite-wasm opfs-sahpool (worker)",
+ "results": [
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Failure",
+   "failure": {
+    "operation": "execute",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "cause": {
+     "info": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+      "resultCode": 1
+     },
+     "name": "SQLite3Error"
+    },
+    "_tag": "DatabaseError"
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      4
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "afterReset": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    3
+   ]
+  ],
+  "changes": 0,
+  "schemaChanged": false,
+  "truncated": false
+ },
+ "events": [
+  {
+   "_tag": "Changed",
+   "changes": 1,
+   "schemaChanged": false
+  },
+  {
+   "_tag": "Reset"
+  }
+ ],
+ "closes": 2
+}
+== coi: probe
+{
+ "pageCrossOriginIsolated": true,
+ "worker": [
+  {
+   "op": "probe",
+   "ok": true,
+   "result": {
+    "libVersion": "3.53.4",
+    "vfsList": [
+     "unix-none",
+     "opfs-wl",
+     "opfs",
+     "memdb",
+     "kvvfs",
+     "unix-excl",
+     "unix-dotfile",
+     "unix"
+    ],
+    "vfsFind": {
+     "opfs": true,
+     "opfs-wl": true,
+     "opfs-sahpool": false,
+     "kvvfs": true
+    },
+    "hasOpfsNamespace": false,
+    "oo1Keys": [
+     "DB",
+     "Stmt",
+     "JsStorageDb",
+     "OpfsDb",
+     "OpfsWlDb"
+    ],
+    "installOpfsSAHPoolVfs": "function",
+    "crossOriginIsolated": true,
+    "sharedArrayBuffer": "function",
+    "atomicsWaitAsync": "function",
+    "opfsGetDirectory": "function",
+    "createSyncAccessHandle": "function",
+    "bigIntEnabled": true,
+    "openWithVfsOpfs": {
+     "ok": true,
+     "dbVfsName": "opfs"
+    },
+    "logs": []
+   }
+  }
+ ]
+}
+== coi: memory
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "memory",
+   "filename": ":memory:",
+   "dbVfsName": "unix-none"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "i",
+    "big",
+    "b",
+    "r",
+    "n",
+    "bool",
+    "t"
+   ],
+   "rows": [
+    [
+     42,
+     {
+      "$type": "bigint",
+      "value": "9007199254740993"
+     },
+     {
+      "$type": "blob",
+      "base64": "AP8Q"
+     },
+     1.5,
+     null,
+     1,
+     "héllo"
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": false,
+  "error": {
+   "name": "SQLite3Error",
+   "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+   "info": {
+    "name": "SQLite3Error",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "resultCode": 1
+   }
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "id",
+    "title",
+    "completed",
+    "created_at"
+   ],
+   "rows": [
+    [
+     1,
+     "seed",
+     0,
+     "2026-01-01"
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ }
+]
+== coi: opfs-sahpool write
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-sahpool",
+   "filename": "/reload-opfs-sahpool.sqlite3",
+   "dbVfsName": "opfs-sahpool"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "count(*)"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: opfs write
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs",
+   "filename": "/reload-opfs.sqlite3",
+   "dbVfsName": "opfs"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "count(*)"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: opfs-wl write
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-wl",
+   "filename": "/reload-opfs-wl.sqlite3",
+   "dbVfsName": "opfs-wl"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [],
+   "rows": [],
+   "changes": 1,
+   "schemaChanged": true,
+   "truncated": false
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "count(*)"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: opfs-sahpool after reload
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-sahpool",
+   "filename": "/reload-opfs-sahpool.sqlite3",
+   "dbVfsName": "opfs-sahpool"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "n"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: opfs after reload
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs",
+   "filename": "/reload-opfs.sqlite3",
+   "dbVfsName": "opfs"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "n"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: opfs-wl after reload
+[
+ {
+  "op": "open",
+  "ok": true,
+  "result": {
+   "vfs": "opfs-wl",
+   "filename": "/reload-opfs-wl.sqlite3",
+   "dbVfsName": "opfs-wl"
+  }
+ },
+ {
+  "op": "exec",
+  "ok": true,
+  "result": {
+   "columns": [
+    "n"
+   ],
+   "rows": [
+    [
+     1
+    ]
+   ],
+   "changes": 0,
+   "schemaChanged": false,
+   "truncated": false
+  }
+ },
+ {
+  "op": "close",
+  "ok": true,
+  "result": true
+ }
+]
+== coi: sahpool two tabs
+{
+ "A_open": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/multi.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  }
+ ],
+ "B_install": [
+  {
+   "op": "installSahpool",
+   "ok": false,
+   "error": {
+    "name": "NoModificationAllowedError",
+    "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.",
+    "info": {
+     "name": "NoModificationAllowedError",
+     "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file."
+    }
+   }
+  }
+ ],
+ "B_open": [
+  {
+   "op": "open",
+   "ok": false,
+   "error": {
+    "name": "NoModificationAllowedError",
+    "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.",
+    "info": {
+     "name": "NoModificationAllowedError",
+     "message": "Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable strea
+== coi: opfs two tabs
+{
+ "A": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs",
+    "filename": "/multi2.sqlite3",
+    "dbVfsName": "opfs"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  }
+ ],
+ "B": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs",
+    "filename": "/multi2.sqlite3",
+    "dbVfsName": "opfs"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "A_sees_B": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ]
+}
+== coi: opfs-wl two tabs
+{
+ "A": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-wl",
+    "filename": "/multi2.sqlite3",
+    "dbVfsName": "opfs-wl"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  }
+ ],
+ "B": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-wl",
+    "filename": "/multi2.sqlite3",
+    "dbVfsName": "opfs-wl"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "A_sees_B": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ]
+}
+== coi: export/import memory
+{
+ "src": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "memory",
+    "filename": ":memory:",
+    "dbVfsName": "unix-none"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  },
+  {
+   "op": "export",
+   "ok": true,
+   "bytes": 16384,
+   "savedAs": "export2",
+   "header": "SQLite format 3"
+  }
+ ],
+ "importFresh": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "memory",
+    "filename": ":memory:",
+    "dbVfsName": "memdb"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "title"
+    ],
+    "rows": [
+     [
+      "seed"
+     ],
+     [
+      "second"
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "importLive": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "op": "importLive",
+   "ok": true,
+   "result": {
+    "importResult": "sqlite3_deserialize on live handle",
+    "sameHandleRead": {
+     "columns": [
+      "count(*)"
+     ],
+     "rows": [
+      [
+       2
+      ]
+     ],
+     "changes": 0,
+     "schemaChanged": false,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "count(*)"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schema
+== coi: export/import opfs-sahpool
+{
+ "src": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/xsrc.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  },
+  {
+   "op": "export",
+   "ok": true,
+   "bytes": 16384,
+   "savedAs": "export2",
+   "header": "SQLite format 3"
+  }
+ ],
+ "importFresh": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs-sahpool",
+    "filename": "/xdst.sqlite3",
+    "dbVfsName": "opfs-sahpool"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "title"
+    ],
+    "rows": [
+     [
+      "seed"
+     ],
+     [
+      "second"
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "importLive": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "op": "importLive",
+   "ok": true,
+   "result": {
+    "importResult": 16384,
+    "sameHandleRead": {
+     "columns": [
+      "count(*)"
+     ],
+     "rows": [
+      [
+       2
+      ]
+     ],
+     "changes": 0,
+     "schemaChanged": false,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "count(*)"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schem
+== coi: export/import opfs
+{
+ "src": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs",
+    "filename": "/xsrc.sqlite3",
+    "dbVfsName": "opfs"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": true,
+    "truncated": false
+   }
+  },
+  {
+   "op": "export",
+   "ok": true,
+   "bytes": 16384,
+   "savedAs": "export2",
+   "header": "SQLite format 3"
+  }
+ ],
+ "importFresh": [
+  {
+   "op": "open",
+   "ok": true,
+   "result": {
+    "vfs": "opfs",
+    "filename": "/xdst.sqlite3",
+    "dbVfsName": "opfs"
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "title"
+    ],
+    "rows": [
+     [
+      "seed"
+     ],
+     [
+      "second"
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "importLive": [
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [],
+    "rows": [],
+    "changes": 2,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "op": "importLive",
+   "ok": true,
+   "result": {
+    "importResult": 16384,
+    "sameHandleRead": {
+     "columns": [
+      "count(*)"
+     ],
+     "rows": [
+      [
+       2
+      ]
+     ],
+     "changes": 0,
+     "schemaChanged": false,
+     "truncated": false
+    }
+   }
+  },
+  {
+   "op": "exec",
+   "ok": true,
+   "result": {
+    "columns": [
+     "count(*)"
+    ],
+    "rows": [
+     [
+      2
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated
+== coi: effect service memory
+{
+ "label": "sqlite-wasm memory (worker)",
+ "results": [
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Failure",
+   "failure": {
+    "operation": "execute",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "cause": {
+     "info": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+      "resultCode": 1
+     },
+     "name": "SQLite3Error"
+    },
+    "_tag": "DatabaseError"
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      4
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "afterReset": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    3
+   ]
+  ],
+  "changes": 0,
+  "schemaChanged": false,
+  "truncated": false
+ },
+ "events": [
+  {
+   "_tag": "Changed",
+   "changes": 1,
+   "schemaChanged": false
+  },
+  {
+   "_tag": "Reset"
+  }
+ ],
+ "closes": 2
+}
+== coi: effect service opfs-sahpool
+{
+ "label": "sqlite-wasm opfs-sahpool (worker)",
+ "results": [
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Failure",
+   "failure": {
+    "operation": "execute",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "cause": {
+     "info": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+      "resultCode": 1
+     },
+     "name": "SQLite3Error"
+    },
+    "_tag": "DatabaseError"
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      4
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "afterReset": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    3
+   ]
+  ],
+  "changes": 0,
+  "schemaChanged": false,
+  "truncated": false
+ },
+ "events": [
+  {
+   "_tag": "Changed",
+   "changes": 1,
+   "schemaChanged": false
+  },
+  {
+   "_tag": "Reset"
+  }
+ ],
+ "closes": 2
+}
+== coi: effect service opfs
+{
+ "label": "sqlite-wasm opfs (worker)",
+ "results": [
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [],
+    "rows": [],
+    "changes": 1,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Failure",
+   "failure": {
+    "operation": "execute",
+    "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+    "cause": {
+     "info": {
+      "name": "SQLite3Error",
+      "message": "SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error",
+      "resultCode": 1
+     },
+     "name": "SQLite3Error"
+    },
+    "_tag": "DatabaseError"
+   }
+  },
+  {
+   "_id": "Result",
+   "_tag": "Success",
+   "value": {
+    "columns": [
+     "n"
+    ],
+    "rows": [
+     [
+      4
+     ]
+    ],
+    "changes": 0,
+    "schemaChanged": false,
+    "truncated": false
+   }
+  }
+ ],
+ "afterReset": {
+  "columns": [
+   "n"
+  ],
+  "rows": [
+   [
+    3
+   ]
+  ],
+  "changes": 0,
+  "schemaChanged": false,
+  "truncated": false
+ },
+ "events": [
+  {
+   "_tag": "Changed",
+   "changes": 1,
+   "schemaChanged": false
+  },
+  {
+   "_tag": "Reset"
+  }
+ ],
+ "closes": 2
+}

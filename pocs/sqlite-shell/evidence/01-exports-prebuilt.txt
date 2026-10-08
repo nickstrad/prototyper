@@ -1,0 +1,52 @@
+file: vendor/fiddle/fiddle-module.wasm
+exports: 279 (functions: 277)  imports: 42
+YES  fiddle_exec
+no   fiddle_the_db
+YES  fiddle_db_handle
+YES  fiddle_db_filename
+YES  fiddle_db_vfs
+YES  fiddle_reset_db
+YES  fiddle_export_db
+YES  fiddle_interrupt
+YES  fiddle_main
+YES  fiddle_get_prompt
+YES  sqlite3_prepare_v2
+YES  sqlite3_prepare_v3
+YES  sqlite3_step
+YES  sqlite3_column_count
+YES  sqlite3_column_name
+YES  sqlite3_column_text
+YES  sqlite3_column_type
+YES  sqlite3_column_int64
+YES  sqlite3_column_double
+YES  sqlite3_column_blob
+YES  sqlite3_column_bytes
+YES  sqlite3_finalize
+YES  sqlite3_exec
+YES  sqlite3_changes
+YES  sqlite3_changes64
+YES  sqlite3_errmsg
+YES  sqlite3_interrupt
+YES  sqlite3_serialize
+YES  sqlite3_deserialize
+YES  sqlite3_bind_int
+YES  sqlite3_bind_int64
+YES  sqlite3_bind_double
+YES  sqlite3_bind_text
+YES  sqlite3_bind_blob
+YES  sqlite3_bind_null
+YES  sqlite3_bind_parameter_count
+YES  sqlite3_bind_parameter_index
+YES  sqlite3_update_hook
+YES  sqlite3_commit_hook
+YES  sqlite3_total_changes
+YES  sqlite3_last_insert_rowid
+YES  malloc
+YES  free
+YES  sqlite3_malloc
+YES  sqlite3_free
+
+all fiddle_* exports: fiddle_main, fiddle_experiment, fiddle_db_handle, fiddle_db_vfs, fiddle_db_arg, fiddle_interrupt, fiddle_db_filename, fiddle_reset_db, fiddle_export_db, fiddle_exec, fiddle_get_prompt
+sqlite3_bind_* exports: sqlite3_bind_pointer, sqlite3_bind_text, sqlite3_bind_int64, sqlite3_bind_int, sqlite3_bind_blob, sqlite3_bind_parameter_count, sqlite3_bind_parameter_name, sqlite3_bind_double, sqlite3_bind_null, sqlite3_bind_zeroblob, sqlite3_bind_parameter_index
+sqlite3_* export count: 214
+non-function exports: memory:memory, __indirect_function_table:table

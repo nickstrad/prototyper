@@ -1,0 +1,285 @@
+browser 151.0.7922.34
+## plain: probe pageCOI false {"vfsList":["unix-none","memdb","kvvfs","unix-excl","unix-dotfile","unix"],"vfsFind":{"opfs":false,"opfs-wl":false,"opfs-sahpool":false,"kvvfs":true},"oo1":["DB","Stmt","JsStorageDb"],"opfsNs":false,"SAB":"undefined","logs":[]}
+## plain: memory
+    open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+    exec: ok []
+    exec: ok [[42,{"$type":"bigint","value":"9007199254740993"},{"$type":"blob","base64":"AP8Q"},1.5,null,1,"héllo"]]
+    exec: ERR SQLite3Error: SQLITE_ERROR: sqlite3 result code 1: near "SELEC": syntax error
+    exec: ok [[1,"seed",0,"2026-01-01"]]
+## plain: opfs-sahpool write
+    open: ok {"vfs":"opfs-sahpool","filename":"/reload-opfs-sahpool.sqlite3","dbVfsName":"opfs-sahpool"}
+    exec: ok []
+    exec: ok [[1]]
+    close: ok true
+## plain: opfs write
+    open: ERR Error: sqlite3.oo1.OpfsDb is not available (VFS not installed)
+    exec: ERR Error: no open database
+    exec: ERR Error: no open database
+    close: ok true
+## plain: opfs-wl write
+    open: ERR Error: sqlite3.oo1.OpfsWlDb is not available (VFS not installed)
+    exec: ERR Error: no open database
+    exec: ERR Error: no open database
+    close: ok true
+## plain: opfs-sahpool after reload
+    open: ok {"vfs":"opfs-sahpool","filename":"/reload-opfs-sahpool.sqlite3","dbVfsName":"opfs-sahpool"}
+    exec: ok [[1]]
+    close: ok true
+## plain: opfs after reload
+    open: ERR Error: sqlite3.oo1.OpfsDb is not available (VFS not installed)
+    exec: ERR Error: no open database
+    close: ok true
+## plain: opfs-wl after reload
+    open: ERR Error: sqlite3.oo1.OpfsWlDb is not available (VFS not installed)
+    exec: ERR Error: no open database
+    close: ok true
+## plain: sahpool two tabs
+   A_open
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok []
+   B_install
+       installSahpool: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   B_open
+       open: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   A_pause
+       pauseSahpool: ok {"isPaused":true,"vfsFind":false}
+   B_retry_in_same_worker
+       installSahpool: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+       open: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+       exec: ERR Error: no open database
+   B_fresh_worker_after_A_pause
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [[2]]
+       pauseSahpool: ok {"isPaused":true,"vfsFind":false}
+   A_unpause_after_B_pause
+       unpauseSahpool: ok {"isPaused":false}
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [["seed"],["from B"]]
+## plain: opfs two tabs
+   A
+       open: ERR Error: sqlite3.oo1.OpfsDb is not available (VFS not installed)
+       exec: ERR Error: no open database
+   B
+       open: ERR Error: sqlite3.oo1.OpfsDb is not available (VFS not installed)
+       exec: ERR Error: no open database
+   A_sees_B
+       exec: ERR Error: no open database
+## plain: opfs-wl two tabs
+   A
+       open: ERR Error: sqlite3.oo1.OpfsWlDb is not available (VFS not installed)
+       exec: ERR Error: no open database
+   B
+       open: ERR Error: sqlite3.oo1.OpfsWlDb is not available (VFS not installed)
+       exec: ERR Error: no open database
+   A_sees_B
+       exec: ERR Error: no open database
+## plain: export/import memory
+   src
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+       exec: ok []
+       export: ok {"bytes":16384,"header":"SQLite format 3"}
+   importFresh
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"memdb"}
+       exec: ok [["seed"],["second"]]
+   importLive
+       exec: ok []
+       importLive: ok {"importResult":"sqlite3_deserialize on live handle","sameHandleRead":{"columns":["count(*)"],"rows":[[2]],"changes":0,"schemaChanged":false,"truncated":false}}
+       exec: ok [[2]]
+   reopenAfterLiveImport
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+       exec: ERR SQLite3Error: SQLITE_ERROR: sqlite3 result code 1: no such table: tasks
+## plain: export/import opfs-sahpool
+   src
+       open: ok {"vfs":"opfs-sahpool","filename":"/xsrc.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok []
+       export: ok {"bytes":16384,"header":"SQLite format 3"}
+   importFresh
+       open: ok {"vfs":"opfs-sahpool","filename":"/xdst.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [["seed"],["second"]]
+   importLive
+       exec: ok []
+       importLive: ok {"importResult":16384,"sameHandleRead":{"columns":["count(*)"],"rows":[[2]],"changes":0,"schemaChanged":false,"truncated":false}}
+       exec: ok [[2]]
+   reopenAfterLiveImport
+       open: ok {"vfs":"opfs-sahpool","filename":"/xdst.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [[2]]
+## plain: effect service memory
+   label "sqlite-wasm memory (worker)"
+   results [{"_id":"Result","_tag":"Success","value":{"columns":[],"rows":[],"changes":1,"schemaChanged":false,"truncated":false}},{"_id":"Result","_tag":"Failure","failure":{"operation":"execute","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","cause":{"info":{"name":"SQLite3Error","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","resultCode":1},"name":"SQLite3Error"},"_tag":"DatabaseError"}},{"_id":"Result","_tag":"Success","value":{"columns":["n"],"rows":[[4]],"changes":0,"schemaChanged":false,"truncated":false}}]
+   afterReset {"columns":["n"],"rows":[[3]],"changes":0,"schemaChanged":false,"truncated":false}
+   events [{"_tag":"Changed","changes":1,"schemaChanged":false},{"_tag":"Reset"}]
+   closes 2
+## plain: effect service opfs-sahpool
+   label "sqlite-wasm opfs-sahpool (worker)"
+   results [{"_id":"Result","_tag":"Success","value":{"columns":[],"rows":[],"changes":1,"schemaChanged":false,"truncated":false}},{"_id":"Result","_tag":"Failure","failure":{"operation":"execute","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","cause":{"info":{"name":"SQLite3Error","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","resultCode":1},"name":"SQLite3Error"},"_tag":"DatabaseError"}},{"_id":"Result","_tag":"Success","value":{"columns":["n"],"rows":[[4]],"changes":0,"schemaChanged":false,"truncated":false}}]
+   afterReset {"columns":["n"],"rows":[[3]],"changes":0,"schemaChanged":false,"truncated":false}
+   events [{"_tag":"Changed","changes":1,"schemaChanged":false},{"_tag":"Reset"}]
+   closes 2
+## coi: probe pageCOI true {"vfsList":["unix-none","opfs-wl","opfs","memdb","kvvfs","unix-excl","unix-dotfile","unix"],"vfsFind":{"opfs":true,"opfs-wl":true,"opfs-sahpool":false,"kvvfs":true},"oo1":["DB","Stmt","JsStorageDb","OpfsDb","OpfsWlDb"],"opfsNs":false,"SAB":"function","logs":[]}
+## coi: memory
+    open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+    exec: ok []
+    exec: ok [[42,{"$type":"bigint","value":"9007199254740993"},{"$type":"blob","base64":"AP8Q"},1.5,null,1,"héllo"]]
+    exec: ERR SQLite3Error: SQLITE_ERROR: sqlite3 result code 1: near "SELEC": syntax error
+    exec: ok [[1,"seed",0,"2026-01-01"]]
+## coi: opfs-sahpool write
+    open: ok {"vfs":"opfs-sahpool","filename":"/reload-opfs-sahpool.sqlite3","dbVfsName":"opfs-sahpool"}
+    exec: ok []
+    exec: ok [[1]]
+    close: ok true
+## coi: opfs write
+    open: ok {"vfs":"opfs","filename":"/reload-opfs.sqlite3","dbVfsName":"opfs"}
+    exec: ok []
+    exec: ok [[1]]
+    close: ok true
+## coi: opfs-wl write
+    open: ok {"vfs":"opfs-wl","filename":"/reload-opfs-wl.sqlite3","dbVfsName":"opfs-wl"}
+    exec: ok []
+    exec: ok [[1]]
+    close: ok true
+## coi: opfs-sahpool after reload
+    open: ok {"vfs":"opfs-sahpool","filename":"/reload-opfs-sahpool.sqlite3","dbVfsName":"opfs-sahpool"}
+    exec: ok [[1]]
+    close: ok true
+## coi: opfs after reload
+    open: ok {"vfs":"opfs","filename":"/reload-opfs.sqlite3","dbVfsName":"opfs"}
+    exec: ok [[1]]
+    close: ok true
+## coi: opfs-wl after reload
+    open: ok {"vfs":"opfs-wl","filename":"/reload-opfs-wl.sqlite3","dbVfsName":"opfs-wl"}
+    exec: ok [[1]]
+    close: ok true
+## coi: sahpool two tabs
+   A_open
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok []
+   B_install
+       installSahpool: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   B_open
+       open: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   A_pause
+       pauseSahpool: ok {"isPaused":true,"vfsFind":false}
+   B_retry_in_same_worker
+       installSahpool: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+       open: ERR NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+       exec: ERR Error: no open database
+   B_fresh_worker_after_A_pause
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [[2]]
+       pauseSahpool: ok {"isPaused":true,"vfsFind":false}
+   A_unpause_after_B_pause
+       unpauseSahpool: ok {"isPaused":false}
+       open: ok {"vfs":"opfs-sahpool","filename":"/multi.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [["seed"],["from B"]]
+## coi: opfs two tabs
+   A
+       open: ok {"vfs":"opfs","filename":"/multi2.sqlite3","dbVfsName":"opfs"}
+       exec: ok []
+   B
+       open: ok {"vfs":"opfs","filename":"/multi2.sqlite3","dbVfsName":"opfs"}
+       exec: ok [[2]]
+   A_sees_B
+       exec: ok [[2]]
+## coi: opfs-wl two tabs
+   A
+       open: ok {"vfs":"opfs-wl","filename":"/multi2.sqlite3","dbVfsName":"opfs-wl"}
+       exec: ok []
+   B
+       open: ok {"vfs":"opfs-wl","filename":"/multi2.sqlite3","dbVfsName":"opfs-wl"}
+       exec: ok [[2]]
+   A_sees_B
+       exec: ok [[2]]
+## coi: export/import memory
+   src
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+       exec: ok []
+       export: ok {"bytes":16384,"header":"SQLite format 3"}
+   importFresh
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"memdb"}
+       exec: ok [["seed"],["second"]]
+   importLive
+       exec: ok []
+       importLive: ok {"importResult":"sqlite3_deserialize on live handle","sameHandleRead":{"columns":["count(*)"],"rows":[[2]],"changes":0,"schemaChanged":false,"truncated":false}}
+       exec: ok [[2]]
+   reopenAfterLiveImport
+       open: ok {"vfs":"memory","filename":":memory:","dbVfsName":"unix-none"}
+       exec: ERR SQLite3Error: SQLITE_ERROR: sqlite3 result code 1: no such table: tasks
+## coi: export/import opfs-sahpool
+   src
+       open: ok {"vfs":"opfs-sahpool","filename":"/xsrc.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok []
+       export: ok {"bytes":16384,"header":"SQLite format 3"}
+   importFresh
+       open: ok {"vfs":"opfs-sahpool","filename":"/xdst.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [["seed"],["second"]]
+   importLive
+       exec: ok []
+       importLive: ok {"importResult":16384,"sameHandleRead":{"columns":["count(*)"],"rows":[[2]],"changes":0,"schemaChanged":false,"truncated":false}}
+       exec: ok [[2]]
+   reopenAfterLiveImport
+       open: ok {"vfs":"opfs-sahpool","filename":"/xdst.sqlite3","dbVfsName":"opfs-sahpool"}
+       exec: ok [[2]]
+## coi: export/import opfs
+   src
+       open: ok {"vfs":"opfs","filename":"/xsrc.sqlite3","dbVfsName":"opfs"}
+       exec: ok []
+       export: ok {"bytes":16384,"header":"SQLite format 3"}
+   importFresh
+       open: ok {"vfs":"opfs","filename":"/xdst.sqlite3","dbVfsName":"opfs"}
+       exec: ok [["seed"],["second"]]
+   importLive
+       exec: ok []
+       importLive: ok {"importResult":16384,"sameHandleRead":{"columns":["count(*)"],"rows":[[2]],"changes":0,"schemaChanged":false,"truncated":false}}
+       exec: ok [[2]]
+   reopenAfterLiveImport
+       open: ok {"vfs":"opfs","filename":"/xdst.sqlite3","dbVfsName":"opfs"}
+       exec: ok [[2]]
+## coi: effect service memory
+   label "sqlite-wasm memory (worker)"
+   results [{"_id":"Result","_tag":"Success","value":{"columns":[],"rows":[],"changes":1,"schemaChanged":false,"truncated":false}},{"_id":"Result","_tag":"Failure","failure":{"operation":"execute","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","cause":{"info":{"name":"SQLite3Error","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","resultCode":1},"name":"SQLite3Error"},"_tag":"DatabaseError"}},{"_id":"Result","_tag":"Success","value":{"columns":["n"],"rows":[[4]],"changes":0,"schemaChanged":false,"truncated":false}}]
+   afterReset {"columns":["n"],"rows":[[3]],"changes":0,"schemaChanged":false,"truncated":false}
+   events [{"_tag":"Changed","changes":1,"schemaChanged":false},{"_tag":"Reset"}]
+   closes 2
+## coi: effect service opfs-sahpool
+   label "sqlite-wasm opfs-sahpool (worker)"
+   results [{"_id":"Result","_tag":"Success","value":{"columns":[],"rows":[],"changes":1,"schemaChanged":false,"truncated":false}},{"_id":"Result","_tag":"Failure","failure":{"operation":"execute","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","cause":{"info":{"name":"SQLite3Error","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","resultCode":1},"name":"SQLite3Error"},"_tag":"DatabaseError"}},{"_id":"Result","_tag":"Success","value":{"columns":["n"],"rows":[[4]],"changes":0,"schemaChanged":false,"truncated":false}}]
+   afterReset {"columns":["n"],"rows":[[3]],"changes":0,"schemaChanged":false,"truncated":false}
+   events [{"_tag":"Changed","changes":1,"schemaChanged":false},{"_tag":"Reset"}]
+   closes 2
+## coi: effect service opfs
+   label "sqlite-wasm opfs (worker)"
+   results [{"_id":"Result","_tag":"Success","value":{"columns":[],"rows":[],"changes":1,"schemaChanged":false,"truncated":false}},{"_id":"Result","_tag":"Failure","failure":{"operation":"execute","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","cause":{"info":{"name":"SQLite3Error","message":"SQLITE_ERROR: sqlite3 result code 1: near \"SELEC\": syntax error","resultCode":1},"name":"SQLite3Error"},"_tag":"DatabaseError"}},{"_id":"Result","_tag":"Success","value":{"columns":["n"],"rows":[[4]],"changes":0,"schemaChanged":false,"truncated":false}}]
+   afterReset {"columns":["n"],"rows":[[3]],"changes":0,"schemaChanged":false,"truncated":false}
+   events [{"_tag":"Changed","changes":1,"schemaChanged":false},{"_tag":"Reset"}]
+   closes 2
+## console (filtered)
+   [plain] error: Failed to load resource: the server responded with a status of 404 (Not Found)
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool removeVfs() failed with no recovery strategy: NoModificationAllowedError: Failed to execute 'removeEntry' on 'FileSystemDirectoryHandle': An attempt was made to modify an object where modifications are not allowed.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [plain-B] error: opfs-sahpool removeVfs() failed with no recovery strategy: NoModificationAllowedError: Failed to execute 'removeEntry' on 'FileSystemDirectoryHandle': An attempt was made to modify an object where modifications are not allowed.
+   [coi] error: Failed to load resource: the server responded with a status of 404 (Not Found)
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool removeVfs() failed with no recovery strategy: NoModificationAllowedError: Failed to execute 'removeEntry' on 'FileSystemDirectoryHandle': An attempt was made to modify an object where modifications are not allowed.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool removeVfs() failed with no recovery strategy: NoModificationAllowedError: Failed to execute 'removeEntry' on 'FileSystemDirectoryHandle': An attempt was made to modify an object where modifications are not allowed.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.
+   [coi-B] error: opfs-sahpool: NoModificationAllowedError: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.

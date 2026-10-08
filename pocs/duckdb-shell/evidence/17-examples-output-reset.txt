@@ -1,0 +1,41 @@
+# input:
+#   .examples
+#   .output off
+#   SELECT 1;
+#   .output on
+#   SELECT 2;
+#   .reset
+# output:
+duckdb> .examples
+
+Remote Parquet Scans:
+  SELECT count(*) FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/lineitem.parquet';
+  SELECT count(*) FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/customer.parquet';
+  SELECT avg(c_acctbal) FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/customer.parquet';
+  SELECT * FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/orders.parquet' LIMIT 10;
+
+Remote Parquet/Parquet Join:
+  SELECT n_name, count(*)
+  FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/customer.parquet',
+       'https://shell.duckdb.org/data/tpch/0_01/parquet/nation.parquet'
+  WHERE c_nationkey = n_nationkey GROUP BY n_name;
+
+duckdb> .output off
+Output disabled
+
+duckdb> SELECT 1;
+
+duckdb> .output on
+Output enabled
+
+duckdb> SELECT 2;
+┌───┐
+│ 2 │
+╞═══╡
+│ 2 │
+└───┘
+
+duckdb> .reset
+Not implemented yet
+
+duckdb> 

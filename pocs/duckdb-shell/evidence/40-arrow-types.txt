@@ -1,0 +1,40 @@
+# env: duckdb v1.4.3 bundle=eh crossOriginIsolated=false path=:memory:
+# query:
+SELECT
+  9223372036854775807::BIGINT AS big,
+  170141183460469231731687303715884105727::HUGEINT AS huge,
+  42::INTEGER AS int32,
+  3.14::DECIMAL(5,2) AS dec,
+  TIMESTAMP '2024-01-01 09:00:00.123456' AS ts,
+  TIMESTAMPTZ '2024-01-01 09:00:00+00' AS tstz,
+  DATE '2024-01-01' AS d,
+  INTERVAL 90 MINUTE AS iv,
+  NULL::INTEGER AS null_int,
+  [1, 2, NULL]::INTEGER[] AS list_int,
+  [10000000000, 2]::BIGINT[] AS list_big,
+  {'a': 1, 'b': 'x'} AS st,
+  MAP {'k': 1} AS mp,
+  '\xAA\x00'::BLOB AS bl,
+  uuid() IS NOT NULL AS bool,
+  '00000000-0000-0000-0000-000000000001'::UUID AS uid
+
+big       {"arrowType":"Int64","typeof":"bigint","ctor":"BigInt","string":"9223372036854775807","json":"THROWS: Do not know how to serialize a BigInt","toJSON":null,"toArray":null}
+huge      {"arrowType":"Decimal[38e0]","typeof":"object","ctor":"DecimalBigNum","string":"170141183460469231731687303715884105727","json":"\"\\\"170141183460469231731687303715884105727\\\"\"","toJSON":"\"\\\"170141183460469231731687303715884105727\\\"\"","toArray":null}
+int32     {"arrowType":"Int32","typeof":"number","ctor":"Number","string":"42","json":"42","toJSON":null,"toArray":null}
+dec       {"arrowType":"Decimal[5e+2]","typeof":"object","ctor":"DecimalBigNum","string":"314","json":"\"\\\"314\\\"\"","toJSON":"\"\\\"314\\\"\"","toArray":null}
+ts        {"arrowType":"Timestamp<MICROSECOND>","typeof":"number","ctor":"Number","string":"1704099600123.456","json":"1704099600123.456","toJSON":null,"toArray":null}
+tstz      {"arrowType":"Timestamp<MICROSECOND, UTC>","typeof":"number","ctor":"Number","string":"1704099600000","json":"1704099600000","toJSON":null,"toArray":null}
+d         {"arrowType":"Date32<DAY>","typeof":"number","ctor":"Number","string":"1704067200000","json":"1704067200000","toJSON":null,"toArray":null}
+iv        {"arrowType":"Interval<MONTH_DAY_NANO>","typeof":"object","ctor":"Int32Array","string":"0,0","json":"{\"0\":0,\"1\":0}","toJSON":null,"toArray":null}
+null_int  {"arrowType":"Int32","typeof":"object","ctor":null,"string":"null","json":"null","toJSON":null,"toArray":null}
+list_int  {"arrowType":"List<Int32>","typeof":"object","ctor":"_Vector","string":"[1,2,]","json":"[1,2,null]","toJSON":"[1,2,null]","toArray":"1,2,0"}
+list_big  {"arrowType":"List<Int64>","typeof":"object","ctor":"_Vector","string":"[10000000000,2]","json":"THROWS: Do not know how to serialize a BigInt","toJSON":"[\"10000000000n\",\"2n\"]","toArray":"10000000000,2"}
+st        {"arrowType":"Struct<{a:Int32, b:Utf8}>","typeof":"object","ctor":"StructRow","string":"{\"a\": 1, \"b\": \"x\"}","json":"{\"a\":1,\"b\":\"x\"}","toJSON":"{\"a\":1,\"b\":\"x\"}","toArray":"1,x"}
+mp        {"arrowType":"Map<{key:Utf8, value:Int32}>","typeof":"object","ctor":"MapRow","string":"{\"k\": 1}","json":"{\"k\":1}","toJSON":"{\"k\":1}","toArray":"1"}
+bl        {"arrowType":"Binary","typeof":"object","ctor":"Uint8Array","string":"170,0","json":"{\"0\":170,\"1\":0}","toJSON":null,"toArray":null}
+bool      {"arrowType":"Bool","typeof":"boolean","ctor":"Boolean","string":"true","json":"true","toJSON":null,"toArray":null}
+uid       {"arrowType":"Utf8","typeof":"string","ctor":"String","string":"00000000-0000-0000-0000-000000000001","json":"\"00000000-0000-0000-0000-000000000001\"","toJSON":null,"toArray":null}
+
+row.toJSON() -> JSON.stringify: THROWS: Do not know how to serialize a BigInt
+
+JSON.stringify of a toArray() row (no replacer) throws for BigInt values as shown above.

@@ -1,0 +1,21 @@
+# input:
+#   SELEC oops FROM events;
+#   SELECT count(*) AS ok FROM events;
+# output:
+duckdb> SELEC oops FROM events;
+Parser Error: syntax error at or near "SELEC"
+
+LINE 1: SELEC oops FROM events;
+        ^
+
+LINE 1: SELEC oops FROM events;
+        ^
+
+duckdb> SELECT count(*) AS ok FROM events;
+┌────┐
+│ ok │
+╞════╡
+│  5 │
+└────┘
+
+duckdb> 

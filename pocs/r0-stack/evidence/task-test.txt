@@ -1,0 +1,21 @@
+$ deno task test   (deno 2.7.14, 2026-10-08T02:23:57Z, uncommitted pocs/r0-stack)
+Task test deno test --allow-env=POC_FAIL_DEMO,POC_REPLAY_PATH tests/
+Check tests/core_test.ts
+Check tests/property_test.ts
+Check tests/shell_test.ts
+running 4 tests from ./tests/core_test.ts
+createTask uses the injected clock ... ok (1ms)
+empty title fails with typed InvalidInput ... ok (0ms)
+completeTask of a missing id fails with TaskNotFound ... ok (0ms)
+list reflects create + complete ... ok (0ms)
+running 1 test from ./tests/property_test.ts
+CLI task ops match a reference model ... ok (15ms)
+running 1 test from ./tests/shell_test.ts
+quoted args, pipelines, jq and failures through just-bash ...
+------- post-test output -------
+----- post-test output end -----
+quoted args, pipelines, jq and failures through just-bash ... ok (19ms)
+
+ok | 6 passed | 0 failed (262ms)
+
+exit=0

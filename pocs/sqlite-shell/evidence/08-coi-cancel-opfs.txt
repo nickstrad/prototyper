@@ -1,0 +1,114 @@
+# Served WITH COOP/COEP (COI=1)
+# init: {
+ "libversion": "3.54.0",
+ "sourceId": "2026-10-05 14:22:13 4bfc6e53a95d710b7f40fa9c80d8cdd1df50d69ed8614e9800f7e6a1ca5a3c29",
+ "pointerSize": 4,
+ "filename": null,
+ "vfs": null,
+ "prompt": "SQLite-3.54 fiddle.sqlite3-> ",
+ "handle": "0",
+ "crossOriginIsolated": true,
+ "sharedArrayBuffer": true,
+ "vfsBeforeShutdown": [
+  "unix-none",
+  "opfs-wl",
+  "opfs",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix"
+ ],
+ "vfsList": [
+  "unix-none",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix",
+  "opfs-wl",
+  "opfs"
+ ],
+ "opfs": true
+}
+
+### input (fiddle_exec "CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);\nINSERT INTO t(name) VALUES('from-shell');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+## enableCancel
+{
+ "installed": true
+}
+
+## infinite recursive CTE, poc.cancel() after 500ms (progress handler + SAB)
+[stderr] Error near line 1: interrupted
+elapsed ms: 503
+
+### input (fiddle_exec "SELECT 'alive after cancel';\n")
+╭──────────────────────╮
+│ 'alive after cancel' │
+╞══════════════════════╡
+│ alive after cancel   │
+╰──────────────────────╯
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### try OPFS vfs (fiddle_exec ".open file:/opfs-test.db?vfs=opfs\n")
+.open file:/opfs-test.db?vfs=opfs
+
+[stderr] Error: unable to open database "file:/opfs-test.db?vfs=opfs": disk I/O error
+[stderr] Notice: using substitute in-memory database instead of "file:/opfs-test.db?vfs=opfs"
+[prompt after: "SQLite-3.54 opfs-test.db?vfs=opfs-> "]
+
+# --- new page, COI, argv without -safe ---
+
+### OPFS open, no -safe (fiddle_exec ".open file:/opfs-test.db?vfs=opfs\n")
+.open file:/opfs-test.db?vfs=opfs
+
+[prompt after: "SQLite-3.54 opfs-test.db-> "]
+
+### input (fiddle_exec "CREATE TABLE IF NOT EXISTS p(x); INSERT INTO p VALUES(datetime('now')); SELECT count(*) AS rows_in_opfs_table FROM p;\n")
+╭────────────────────╮
+│ rows_in_opfs_table │
+╞════════════════════╡
+│                  1 │
+╰────────────────────╯
+[prompt after: "SQLite-3.54 opfs-test.db-> "]
+
+### input (fiddle_exec ".vfsname\n")
+.vfsname
+
+[prompt after: "SQLite-3.54 opfs-test.db-> "]
+
+## app bridge on the OPFS handle
+{
+ "columns": [
+  "n"
+ ],
+ "rows": [
+  [
+   1
+  ]
+ ],
+ "statements": 1,
+ "changes": 0,
+ "totalChangesDelta": 0,
+ "lastInsertRowid": 1,
+ "autocommit": true
+}
+
+# --- page.reload() in the same browser context (new worker + new WASM instance): is OPFS data persistent? ---
+
+### input (fiddle_exec ".open file:/opfs-test.db?vfs=opfs\n")
+.open file:/opfs-test.db?vfs=opfs
+
+[prompt after: "SQLite-3.54 opfs-test.db-> "]
+
+### input (fiddle_exec "SELECT count(*) AS rows_after_reload FROM p;\n")
+╭───────────────────╮
+│ rows_after_reload │
+╞═══════════════════╡
+│                 1 │
+╰───────────────────╯
+[prompt after: "SQLite-3.54 opfs-test.db-> "]
+

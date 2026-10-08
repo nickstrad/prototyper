@@ -1,0 +1,7 @@
+node_modules/
+.emsdk/
+build/
+sqlite-src/
+*.tar.gz
+*.zip
+test-results/

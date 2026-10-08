@@ -1,0 +1,18 @@
+$ POC_FAIL_DEMO=1 POC_REPLAY_PATH=3:1:0:1 deno test --allow-env=POC_FAIL_DEMO,POC_REPLAY_PATH tests/property_test.ts
+Check tests/property_test.ts
+running 1 test from ./tests/property_test.ts
+CLI task ops match a reference model ... FAILED (4ms)
+
+ ERRORS 
+
+CLI task ops match a reference model => ./tests/property_test.ts:19:6
+error: Error: Property failed after 1 tests
+{ seed: 20261007, path: "3:1:0:1", endOnFailure: true }
+Counterexample: [[{"kind":"create","title":""}]]
+Shrunk 0 time(s)
+
+
+$ (fixed) deno task test -- property only
+
+ok | 1 passed | 0 failed (18ms)
+

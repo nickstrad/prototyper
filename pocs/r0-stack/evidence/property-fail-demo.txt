@@ -1,0 +1,35 @@
+Check tests/property_test.ts
+running 1 test from ./tests/property_test.ts
+CLI task ops match a reference model ... FAILED (9ms)
+
+ ERRORS 
+
+CLI task ops match a reference model => ./tests/property_test.ts:17:6
+error: Error: Property failed after 4 tests
+{ seed: 20261007, path: "3:1:0:1", endOnFailure: true }
+Counterexample: [[{"kind":"create","title":""}]]
+Shrunk 3 time(s)
+
+Encountered failures were:
+- [[{"kind":"complete","id":4},{"kind":"complete","id":1},{"kind":"create","title":"defin2v"},{__proto__:null,"kind":"complete","id":2},{"kind":"create","title":"4wn`Y;\"}/T"},{__proto__:null,"kind":"complete","id":3},{"kind":"create","title":""},{__proto__:null,"kind":"create","title":"t"},{"kind":"complete","id":0}]]
+- [[{"kind":"create","title":"4wn`Y;\"}/T"},{__proto__:null,"kind":"complete","id":3},{"kind":"create","title":""},{__proto__:null,"kind":"create","title":"t"},{"kind":"complete","id":0}]]
+- [[{"kind":"create","title":""},{__proto__:null,"kind":"create","title":"t"},{"kind":"complete","id":0}]]
+- [[{"kind":"create","title":""}]]
+	const error = new SError(errorMessage, { cause: out.errorInstance });
+	              ^
+    at buildError (file:///Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2469:16)
+    at asyncThrowIfFailed (file:///Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2481:8)
+Caused by: Error: create "" exit 1
+    at file:///Users/nick/Software/prototyper/pocs/r0-stack/tests/property_test.ts:29:21
+    at async AsyncProperty.run (file:///Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:1217:19)
+    at async asyncPropertyExecution (file:///Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2564:14)
+    at async asyncRunIt (file:///Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2557:15)
+    at async file:///Users/nick/Software/prototyper/pocs/r0-stack/tests/property_test.ts:18:3
+
+ FAILURES 
+
+CLI task ops match a reference model => ./tests/property_test.ts:17:6
+
+FAILED | 0 passed | 1 failed (11ms)
+
+error: Test failed

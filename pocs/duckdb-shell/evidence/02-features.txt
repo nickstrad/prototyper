@@ -1,0 +1,22 @@
+# input:
+#   .features
+# output:
+duckdb> .features
+
+Platform Compatibility:
+ ✓  BigInt64Array            - https://caniuse.com/?search=bigint64array
+ ✓  WebGL 2 Renderer         - https://chromestatus.com/feature/6694359164518400
+ ✓  WebAssembly Exceptions   - https://chromestatus.com/feature/4756734233018368
+ ✓  WebAssembly SIMD         - https://chromestatus.com/feature/6533147810332672
+ ✓  WebAssembly Bulk Memory  - https://chromestatus.com/feature/4590306448113664
+ ✗  WebAssembly Threads      - https://chromestatus.com/feature/5724132452859904
+ ✗  Cross Origin Isolated    - Cross Origin policies allow for multi-threading
+
+DuckDB Bundle Features:
+ ✓  BigInt64Array            - Module uses BigInt64Arrays
+ ✓  WebAssembly Exceptions   - Module uses native exceptions
+ ✗  WebAssembly SIMD         - Module uses SIMD instructions
+ ✗  WebAssembly Bulk Memory  - Module uses bulk memory operations
+ ✗  WebAssembly Threads      - Module uses multiple web-workers
+
+duckdb> 

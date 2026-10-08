@@ -1,0 +1,18 @@
+[0m[32mTask[0m [0m[36mbuild[0m deno run -A npm:vite@8.3.3 build
+vite v8.3.3 building client environment for production...
+transforming...
+[plugin rolldown:vite-resolve] Module "node:zlib" has been externalized for browser compatibility, imported by "/Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/just-bash@3.6.0/node_modules/just-bash/dist/bundle/browser.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+✓ 263 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.91 kB │ gzip:   0.38 kB
+dist/assets/vendor-xterm-BrP-ENHg.css         3.93 kB │ gzip:   1.01 kB
+dist/assets/rolldown-runtime-D9-fqq9M.js      0.08 kB │ gzip:   0.08 kB
+dist/assets/index-B-w9tUY6.js                 4.20 kB │ gzip:   2.13 kB
+dist/assets/vendor-react-DQrzmfe6.js          8.19 kB │ gzip:   3.11 kB
+dist/assets/vendor-effect-BBEH2CWG.js        80.79 kB │ gzip:  26.89 kB
+dist/assets/vendor-react-dom-7Z796UFC.js    210.54 kB │ gzip:  65.70 kB
+dist/assets/vendor-xterm-DqjbXue6.js        330.94 kB │ gzip:  83.01 kB
+dist/assets/vendor-just-bash-DYIZ3sIs.js  1,266.67 kB │ gzip: 349.77 kB
+
+✓ built in 167ms

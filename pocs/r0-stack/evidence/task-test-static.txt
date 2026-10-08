@@ -1,0 +1,56 @@
+$ deno task test:static   (deno 2.7.14, 2026-10-08T02:24:00Z, uncommitted pocs/r0-stack)
+Task test:static deno task build && PW_TARGET=static deno run -A npm:@playwright/test@1.62.0 test
+Task build deno run -A npm:vite@8.3.3 build
+vite v8.3.3 building client environment for production...
+transforming...
+[plugin rolldown:vite-resolve] Module "node:zlib" has been externalized for browser compatibility, imported by "/Users/nick/Software/prototyper/pocs/r0-stack/node_modules/.deno/just-bash@3.6.0/node_modules/just-bash/dist/bundle/browser.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+✓ 263 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.91 kB │ gzip:   0.38 kB
+dist/assets/vendor-xterm-BrP-ENHg.css         3.93 kB │ gzip:   1.01 kB
+dist/assets/rolldown-runtime-D9-fqq9M.js      0.08 kB │ gzip:   0.08 kB
+dist/assets/index-Dif8BD4Y.js                 4.21 kB │ gzip:   2.14 kB
+dist/assets/vendor-react-DQrzmfe6.js          8.19 kB │ gzip:   3.11 kB
+dist/assets/vendor-effect-BBEH2CWG.js        80.79 kB │ gzip:  26.89 kB
+dist/assets/vendor-react-dom-7Z796UFC.js    210.54 kB │ gzip:  65.70 kB
+dist/assets/vendor-xterm-DqjbXue6.js        330.94 kB │ gzip:  83.01 kB
+dist/assets/vendor-just-bash-DYIZ3sIs.js  1,266.67 kB │ gzip: 349.77 kB
+
+✓ built in 163ms
+
+Running 1 test using 1 worker
+
+---- terminal buffer ----
+just-bash + Effect terminal. Try: tasks create "Build API"
+$ hello Alice
+Hello, Alice!
+$ tasks create "Build API"
+created 1: Build API
+$ tasks create 'Write tests'
+created 2: Write tests
+$ tasks list --json | jq '.[].title'
+"Build API"
+"Write tests"
+$ echo a | tr a-z A-Z
+A
+$ tasks complete 42
+tasks: task 42 not found
+[exit 1]
+$ sqlite3 :memory: 'select 1'
+bash: sqlite3: command not available in browser environments. Exclude 'sqlite3' from your commands o
+r use the Node.js bundle.
+[exit 127]
+$ tasks complete 42
+tasks: task 42 not found
+[exit 1]
+$ tasks create ""
+tasks: invalid input: title is required
+[exit 1]
+$
+---- console warnings/errors ----
+
+  ✓  1 [chromium] › e2e/terminal.spec.ts:19:1 › terminal runs just-bash + Effect commands (379ms)
+
+  1 passed (817ms)
+exit=0

@@ -1,0 +1,95 @@
+app before: [{"c":5}]
+
+### after typing .open — FULL terminal buffer:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 
+
+db calls: ["connectInternal([])","open([{\"__wbg_ptr\":1247008}])","connectInternal([])"]
+
+app query after: "ERROR Parser Error: Max expression depth limit of 0 exceeded. Use \"SET max_expression_depth TO x\" to increase the maximum expression depth."
+
+app current_database: "ERROR Parser Error: Max expression depth limit of 0 exceeded. Use \"SET max_expression_depth TO x\" to increase the maximum expression depth."
+
+### after typing .open foo.duckdb — FULL terminal buffer:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a read-only remote database at: foo.duckdb.
+Enter .help for usage hints.
+
+duckdb> 
+
+db calls: ["connectInternal([])","open([{\"__wbg_ptr\":1247008}])","connectInternal([])","open([{\"__wbg_ptr\":1247152}])","connectInternal([])"]
+
+app query after: "ERROR memory access out of bounds"
+
+app current_database: "ERROR memory access out of bounds"
+
+shell after .open:
+duckdb> SELECT count(*) FROM events;
+Catalog Error: Table with name events does not exist!
+Did you mean "pg_views"?
+
+LINE 1: SELECT count(*) FROM events;
+                             ^
+
+duckdb> SELECT database_name, path FROM duckdb_databases();
+┌───────────────┬──────┐
+│ database_name ┆ path │
+╞═══════════════╪══════╡
+│ memory        ┆      │
+│ system        ┆      │
+│ temp          ┆      │
+└───────────────┴──────┘
+
+duckdb> 
+
+console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] Error: Parser Error: Max expression depth limit of 0 exceeded. Use "SET max_expression_depth TO x" to increase the maximum expression depth.
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738642)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+    at globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772397)
+[log] Error: Parser Error: Max expression depth limit of 0 exceeded. Use "SET max_expression_depth TO x" to increase the maximum expression depth.
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738642)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+    at globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772397)
+[log] RuntimeError: memory access out of bounds
+    at wasm://wasm/082a006a:wasm-function[26721]:0x139a444
+    at wasm://wasm/082a006a:wasm-function[25765]:0x134dc7b
+    at wasm://wasm/082a006a:wasm-function[25857]:0x1358950
+    at wasm://wasm/082a006a:wasm-function[25982]:0x1363949
+    at wasm://wasm/082a006a:wasm-function[2696]:0x89b14c
+    at wasm://wasm/082a006a:wasm-function[2989]:0x8a6753
+    at Object.ccall (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:236579)
+    at fe (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:735463)
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738522)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+[log] RuntimeError: memory access out of bounds
+    at wasm://wasm/082a006a:wasm-function[26721]:0x139a444
+    at wasm://wasm/082a006a:wasm-function[25765]:0x134dc7b
+    at wasm://wasm/082a006a:wasm-function[25857]:0x1358950
+    at wasm://wasm/082a006a:wasm-function[25982]:0x1363949
+    at wasm://wasm/082a006a:wasm-function[2696]:0x89b14c
+    at wasm://wasm/082a006a:wasm-function[2989]:0x8a6753
+    at Object.ccall (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:236579)
+    at fe (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:735463)
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738522)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+[log] Error: Catalog Error: Table with name events does not exist!
+Did you mean "pg_views"?
+
+LINE 1: SELECT count(*) FROM events;
+                             ^
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738642)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+    at globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772397)

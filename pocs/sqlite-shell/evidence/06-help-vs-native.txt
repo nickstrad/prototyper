@@ -1,0 +1,30 @@
+# .help command names: Fiddle SQLite 3.54.0 (source-id 2026-10-05 14:22:13 4bfc6e53a9) vs native: 3.54.0 2026-04-09 12:25:13 8fa8248e303219400c646a885e36dfc52eae33d83f4412e3f369b2be5373aapl (64-bit) at /usr/bin/sqlite3
+# Versions differ (Apple build vs fiddle trunk); a difference may be version drift, not only WASM compile-out.
+# fiddle count:       47   native count:       68
+
+## in native .help but NOT in fiddle .help:
+.archive
+.backup
+.cd
+.clone
+.dbstat
+.excel
+.exit
+.hex
+.import
+.nonce
+.once
+.open
+.output
+.quit
+.read
+.rekey
+.restore
+.save
+.shell
+.system
+.text
+.www
+
+## in fiddle .help but NOT in native .help:
+.diskused

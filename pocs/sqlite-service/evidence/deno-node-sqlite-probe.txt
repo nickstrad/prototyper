@@ -1,0 +1,23 @@
+columns() [ "a", "b", "c", "d", "bool" ]
+default all() error: RangeError: Value is too large to be represented as a JavaScript number: 9007199254740993
+readBigInts all() [
+  [Object: null prototype] {
+    a: 9007199254740993n,
+    b: "x",
+    c: Uint8Array(2) [ 1, 2 ],
+    d: 1.5,
+    bool: 1n
+  },
+  [Object: null prototype] {
+    a: 1n,
+    b: null,
+    c: null,
+    d: null,
+    bool: 1n
+  }
+]
+arrays err RangeError: Value is too large to be represented as a JavaScript number: 9007199254740993
+run() { lastInsertRowid: 3, changes: 1 }
+run() on select { lastInsertRowid: 3, changes: 1 }
+error shape Error ERR_SQLITE_ERROR undefined undefined Error: near "selec": syntax error in selec 1 at offset 0
+deno { deno: "2.7.14", v8: "14.7.173.20-rusty", typescript: "5.9.2" }

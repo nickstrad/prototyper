@@ -1,0 +1,23 @@
+Check tests/service.test.ts
+Check tests/shapes.test.ts
+running 11 tests from ./tests/service.test.ts
+node:sqlite: seeded tasks, tables(), schema() ... ok (2ms)
+node:sqlite: bad SQL is a typed DatabaseError and emits no event ... ok (1ms)
+node:sqlite: exactly one event per successful write, none for reads/no-op/failure ... ok (0ms)
+node:sqlite: reset swaps the handle, keeps service identity, restores seeds ... ok (0ms)
+node:sqlite: export/import round-trip and invalid import recovers ... ok (3ms)
+sqlite-wasm: seeded tasks, tables(), schema() ... ok (20ms)
+sqlite-wasm: bad SQL is a typed DatabaseError and emits no event ... ok (1ms)
+sqlite-wasm: exactly one event per successful write, none for reads/no-op/failure ...
+------- output -------
+sqlite3_step() rc= 1299 SQLITE_CONSTRAINT_NOTNULL SQL = INSERT INTO tasks (title) VALUES ('missing created_at')
+----- output end -----
+sqlite-wasm: exactly one event per successful write, none for reads/no-op/failure ... ok (1ms)
+sqlite-wasm: reset swaps the handle, keeps service identity, restores seeds ... ok (0ms)
+sqlite-wasm: export/import round-trip and invalid import recovers ... ok (2ms)
+changes Stream (Stream.fromPubSub) delivers write events in order ... ok (1ms)
+running 1 test from ./tests/shapes.test.ts
+node:sqlite and sqlite-wasm produce identical JSON results ... ok (21ms)
+
+ok | 12 passed | 0 failed (83ms)
+

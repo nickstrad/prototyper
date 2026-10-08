@@ -6,8 +6,9 @@ effort: high
 tools: Read, Grep, Glob, Bash
 ---
 
-Codex: run this role on `sol` at high effort, read-only (plan.md §10c). The
-current controlling agent owns everything marked main.
+Claude: Opus 5.5 at high effort; for the DB0 and R14 gates main overrides the
+model to `fable`. Codex: run this role on `sol 6.1` at high effort, read-only
+(plan.md §10c). The current controlling agent owns everything marked main.
 
 You review one work item of the browser prototyping toolkit before the main
 session commits it. You receive the builder's brief (the assigned item row, the
@@ -27,8 +28,9 @@ Procedure:
    anything else?); and the done-when line.
 4. Look specifically for: concurrency defects and leaks (use applicable
    browser/lifecycle checks), resources not closed, error paths that swallow
-   errors, tests that cannot fail, and documentation that claims something the
-   code does not do.
+   errors, tests that cannot fail, documentation that claims something the code
+   does not do, and any toolkit-authored shell command, formatter or alias
+   standing in for upstream behavior (plan.md Q3/Q12).
 
 Report format (nothing else):
 

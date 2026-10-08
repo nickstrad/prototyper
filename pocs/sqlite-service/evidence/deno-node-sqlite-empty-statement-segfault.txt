@@ -1,0 +1,29 @@
+== d.prepare("-- c
+")
+ok object
+exit=0
+== d.prepare("   ")
+ok object
+exit=0
+== d.prepare("")
+ok object
+exit=0
+== d.prepare(";")
+ok object
+exit=0
+== d.exec("-- c
+")
+ok undefined
+exit=0
+== d.prepare("select 1; -- c").sourceSQL
+ok "select 1;"
+exit=0
+== d.prepare("-- c
+").sourceSQL
+exit=139
+== d.prepare("").columns()
+ok []
+exit=0
+== d.prepare("").run()
+threw Error: not an error
+exit=0

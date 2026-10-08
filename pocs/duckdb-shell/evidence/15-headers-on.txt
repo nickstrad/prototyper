@@ -1,0 +1,7 @@
+# input:
+#   .headers on
+# output:
+duckdb> .headers on
+Unknown command: .headers
+
+duckdb> 

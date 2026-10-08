@@ -1,0 +1,14 @@
+exclude=0
+{"url":"http://localhost:5175/","r":{"coi":true,"vfsFind":{"opfs":true,"opfs-wl":true,"opfs-sahpool":false,"kvvfs":true},"opfs":{"vfs":"opfs","filename":"/devcoi.sqlite3","dbVfsName":"opfs"},"wl":{"vfs":"opfs-wl","filename":"/devcoi2.sqlite3","dbVfsName":"opfs-wl"}},"logs":["debug: [vite] connecting...","debug: [vite] connected.","error: Failed to load resource: the server responded with a status of 404 (Not Found)"]}
+_metadata.json
+@sqlite__org_sqlite-wasm.js
+@sqlite__org_sqlite-wasm.js.map
+effect.js
+effect.js.map
+package.json
+exclude=1
+{"url":"http://localhost:5175/","r":{"coi":true,"vfsFind":{"opfs":true,"opfs-wl":true,"opfs-sahpool":false,"kvvfs":true},"opfs":{"vfs":"opfs","filename":"/devcoi.sqlite3","dbVfsName":"opfs"},"wl":{"vfs":"opfs-wl","filename":"/devcoi2.sqlite3","dbVfsName":"opfs-wl"}},"logs":["debug: [vite] connecting...","debug: [vite] connected.","error: Failed to load resource: the server responded with a status of 404 (Not Found)"]}
+_metadata.json
+effect.js
+effect.js.map
+package.json

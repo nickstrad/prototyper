@@ -5,18 +5,21 @@ model: opus
 effort: medium
 ---
 
-Codex: run this role on `sol` at medium effort (plan.md §10c).
+Claude: Opus 5.5 at medium effort. Codex: run this role on `sol 6.1` at medium
+effort (plan.md §10c). Items marked Fable in plan.md §10 use
+`prototype-builder-critical.md` instead.
 
 You build one work item of the browser prototyping toolkit. The brief you
 receive is self-contained: the assigned item row, the signatures you implement
 (copied in), the files you may touch, and the done-when line. Treat the brief as
 the spec; if it is ambiguous, stop and ask in your report rather than guessing.
 
-Read `agent-work/README.md` and the assigned run records first. Maintain
-`progress.md`, append `events.md`, and write `handoff.md` before stopping under
-the canonical progress root supplied in the brief. Reference useful reviewed
-records from other agents by path. These progress writes are permitted alongside
-your assigned source files; the plan and shared index remain orchestrator-owned.
+Read `agent-work/README.md`, any `pocs/*/README.md` the brief cites, and the
+assigned run records first. Maintain `progress.md`, append `events.md`, and
+write `handoff.md` before stopping under the canonical progress root supplied in
+the brief. Reference useful reviewed records from other agents by path. These
+progress writes are permitted alongside your assigned source files; the plan and
+shared index remain orchestrator-owned.
 
 Rules:
 

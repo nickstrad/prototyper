@@ -1,0 +1,98 @@
+# input:
+#   SELECT table_name FROM duckdb_tables();
+#   SELECT sql FROM duckdb_tables() WHERE table_name = 'events';
+#   SUMMARIZE events;
+#   SELECT to_json(e) AS j FROM events e LIMIT 2;
+#   SELECT json_group_array(e) AS j FROM (SELECT * FROM events ORDER BY id LIMIT 2) e;
+#   COPY (SELECT * FROM events ORDER BY id) TO 'events.csv' (FORMAT csv, HEADER);
+#   SELECT * FROM read_csv('events.csv');
+#   .files list
+#   COPY (SELECT * FROM events) TO '/dev/stdout' (FORMAT csv);
+# output:
+duckdb> SELECT table_name FROM duckdb_tables();
+┌────────────┐
+│ table_name │
+╞════════════╡
+│ events     │
+└────────────┘
+
+duckdb> SELECT sql FROM duckdb_tables() WHERE table_name = 'events';
+┌──────────────────────────────────────────────────────────────┐
+│ sql                                                          │
+╞══════════════════════════════════════════════════════════════╡
+│ CREATE TABLE events(id INTEGER, kind VARCHAR, ts TIMESTAMP); │
+└──────────────────────────────────────────────────────────────┘
+
+duckdb> SUMMARIZE events;
+┌──────────┬──────────┬──────────┬──────────┬───┬──────────┬──────────┬──────────┬──────────┬─────────┬───────┬──────┐
+│ column_n ┆ column_t ┆ min      ┆ max      ┆ a ┆ avg      ┆ std      ┆ q25      ┆ q50      ┆ q75     ┆ count ┆ null │
+│ ame      ┆ ype      ┆          ┆          ┆ p ┆          ┆          ┆          ┆          ┆         ┆       ┆ _per │
+│          ┆          ┆          ┆          ┆ p ┆          ┆          ┆          ┆          ┆         ┆       ┆ cent │
+│          ┆          ┆          ┆          ┆ r ┆          ┆          ┆          ┆          ┆         ┆       ┆ age  │
+│          ┆          ┆          ┆          ┆ o ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ x ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ _ ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ u ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ n ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ i ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ q ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ u ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆ e ┆          ┆          ┆          ┆          ┆         ┆       ┆      │
+╞══════════╪══════════╪══════════╪══════════╪═══╪══════════╪══════════╪══════════╪══════════╪═════════╪═══════╪══════╡
+│ id       ┆ INTEGER  ┆ 1        ┆ 5        ┆ 5 ┆ 3.0      ┆ 1.581138 ┆ 2        ┆ 3        ┆ 4       ┆     5 ┆ 0.00 │
+│          ┆          ┆          ┆          ┆   ┆          ┆ 83008418 ┆          ┆          ┆         ┆       ┆      │
+│          ┆          ┆          ┆          ┆   ┆          ┆ 98       ┆          ┆          ┆         ┆       ┆      │
+│ kind     ┆ VARCHAR  ┆ login    ┆ signup   ┆ 4 ┆          ┆          ┆          ┆          ┆         ┆     5 ┆ 0.00 │
+│ ts       ┆ TIMESTAM ┆ 2024-01- ┆ 2024-01- ┆ 5 ┆ 2024-01- ┆          ┆ 2024-01- ┆ 2024-01- ┆ 2024-01 ┆     5 ┆ 0.00 │
+│          ┆ P        ┆ 01       ┆ 03       ┆   ┆ 02       ┆          ┆ 01       ┆ 02       ┆ -03 10: ┆       ┆      │
+│          ┆          ┆ 09:00:00 ┆ 18:45:00 ┆   ┆ 11:31:00 ┆          ┆ 09:03:45 ┆ 12:30:00 ┆ 52:30   ┆       ┆      │
+└──────────┴──────────┴──────────┴──────────┴───┴──────────┴──────────┴──────────┴──────────┴─────────┴───────┴──────┘
+
+duckdb> SELECT to_json(e) AS j FROM events e LIMIT 2;
+┌─────────────────────────────────────────────────────┐
+│ j                                                   │
+╞═════════════════════════════════════════════════════╡
+│ {"id":1,"kind":"signup","ts":"2024-01-01 09:00:00"} │
+│ {"id":2,"kind":"login","ts":"2024-01-01 09:05:00"}  │
+└─────────────────────────────────────────────────────┘
+
+duckdb> SELECT json_group_array(e) AS j FROM (SELECT * FROM events ORDER BY id LIMIT 2) e;
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ j                                                                                                        │
+╞══════════════════════════════════════════════════════════════════════════════════════════════════════════╡
+│ [{"id":1,"kind":"signup","ts":"2024-01-01 09:00:00"},{"id":2,"kind":"login","ts":"2024-01-01 09:05:00"}] │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+duckdb> COPY (SELECT * FROM events ORDER BY id) TO 'events.csv' (FORMAT csv, HEADER);
+┌───────┐
+│ Count │
+╞═══════╡
+│     5 │
+└───────┘
+
+duckdb> SELECT * FROM read_csv('events.csv');
+┌────┬──────────┬─────────────────────┐
+│ id ┆ kind     ┆ ts                  │
+╞════╪══════════╪═════════════════════╡
+│  1 ┆ signup   ┆ 2024-01-01T09:00:00 │
+│  2 ┆ login    ┆ 2024-01-01T09:05:00 │
+│  3 ┆ purchase ┆ 2024-01-02T12:30:00 │
+│  4 ┆ login    ┆ 2024-01-03T08:15:00 │
+│  5 ┆ logout   ┆ 2024-01-03T18:45:00 │
+└────┴──────────┴─────────────────────┘
+
+duckdb> .files list
+┌────────────┬───────────┬──────────┬────────────┐
+│ File Name  ┆ File Size ┆ Protocol ┆ Statistics │
+╞════════════╪═══════════╪══════════╪════════════╡
+│ events.csv ┆ 156 B     ┆ Buffer   ┆ false      │
+└────────────┴───────────┴──────────┴────────────┘
+
+duckdb> COPY (SELECT * FROM events) TO '/dev/stdout' (FORMAT csv);
+┌───────┐
+│ Count │
+╞═══════╡
+│     5 │
+└───────┘
+
+duckdb> 

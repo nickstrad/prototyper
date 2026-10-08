@@ -1,0 +1,208 @@
+# Same walkthrough, argv without -bail/-safe
+# shell argv: ["/fiddle.sqlite3"]
+# init: {
+ "libversion": "3.54.0",
+ "sourceId": "2026-10-05 14:22:13 4bfc6e53a95d710b7f40fa9c80d8cdd1df50d69ed8614e9800f7e6a1ca5a3c29",
+ "pointerSize": 4,
+ "filename": null,
+ "vfs": null,
+ "prompt": "SQLite-3.54 fiddle.sqlite3-> ",
+ "handle": "0",
+ "crossOriginIsolated": false,
+ "sharedArrayBuffer": false,
+ "vfsBeforeShutdown": [
+  "unix-none",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix"
+ ],
+ "vfsList": [
+  "unix-none",
+  "memdb",
+  "kvvfs",
+  "unix-excl",
+  "unix-dotfile",
+  "unix"
+ ],
+ "opfs": false
+}
+
+### seed via shell (fiddle_exec "CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);\nINSERT INTO t(name) VALUES('from-shell');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".help\n")
+.help
+
+.auth ON|OFF             Show authorizer callbacks
+.bail on|off             Stop after hitting an error.  Default OFF
+.changes on|off          Show number of rows changed by SQL
+.check OPTIONS ...       Verify the results of a .testcase
+.connection [close] [#]  Open or close an auxiliary database connection
+.crlf ?on|off?           Whether or not to use \r\n line endings
+.databases               List names and files of attached databases
+.dbconfig ?op? ?val?     List or change sqlite3_db_config() options
+.dbinfo ?DB?             Show status information about the database
+.dbtotxt                 Hex dump of the database file
+.diskused ?SCHEMA?       Report database space and size stats
+.dump ?OBJECTS?          Render database content as SQL
+.echo on|off             Turn command echo on or off
+.eqp on|off|full|...     Enable or disable automatic EXPLAIN QUERY PLAN
+.expert                  EXPERIMENTAL. Suggest indexes for queries
+.explain ?on|off|auto?   Change the EXPLAIN formatting mode.  Default: auto
+.filectrl CMD ...        Run various sqlite3_file_control() operations
+.fullschema ?--indent?   Show schema and the content of sqlite_stat tables
+.headers on|off          Turn display of headers on or off
+.help ?-all? ?PATTERN?   Show help text for PATTERN
+.imposter INDEX TABLE    Create imposter table TABLE on index INDEX
+.indexes ?PATTERN?       Show names of indexes matching PATTERN
+.intck ?STEPS?           Run an incremental integrity check on the db
+.limit ?LIMIT? ?VAL?     Display or change the value of an SQLITE_LIMIT
+.lint OPTIONS            Report potential schema issues.
+.log on|off              Turn logging on or off.
+.mode ?MODE? ?OPTIONS?   Set output mode
+.nullvalue STRING        Use STRING in place of NULL values
+.parameter CMD ...       Manage SQL parameter bindings
+.print STRING...         Print literal STRING
+.progress N              Invoke progress handler after every N opcodes
+.prompt MAIN CONTINUE    Replace the standard prompts
+.recover                 Recover as much data as possible from corrupt db.
+.scanstats on|off|est    Turn sqlite3_stmt_scanstatus() metrics on or off
+.schema ?PATTERN?        Show the CREATE statements matching PATTERN
+.session ?NAME? CMD ...  Create or control sessions
+.sha3sum ...             Compute a SHA3 hash of database content
+.stats ?ARG?             Show stats or turn stats on or off
+.tables ?TABLE?          List names of tables matching LIKE pattern TABLE
+.testcase NAME           Begin a test case.
+.timeout MS              Try opening locked tables for MS milliseconds
+.timer on|off|once       Turn SQL timer on or off.
+.trace ?OPTIONS?         Output each SQL statement as it is run
+.version                 Show source, library and compiler versions
+.vfsinfo ?AUX?           Information about the top-level VFS
+.vfslist                 List all available VFSes
+.vfsname ?AUX?           Print the name of the VFS stack
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".tables\n")
+.tables
+
+t
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".schema\n")
+.schema
+
+CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".mode table\n")
+.mode table
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".headers on\n")
+.headers on
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT * FROM t;\n")
++----+------------+
+| id |    name    |
++----+------------+
+|  1 | from-shell |
++----+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".mode csv\n")
+.mode csv
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT * FROM t;\n")
+id,name
+1,from-shell
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".mode json\n")
+.mode json
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT * FROM t;\n")
+[{"id":1,"name":"from-shell"}]
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### back to table mode (fiddle_exec ".mode table\n")
+.mode table
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### multiline statement, one submission (fiddle_exec "SELECT id,\n       name\n  FROM t\n WHERE id >= 1\n ORDER BY id;\n")
++----+------------+
+| id |    name    |
++----+------------+
+|  1 | from-shell |
++----+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### multiline split across submissions: part 1 (no semicolon) (fiddle_exec "SELECT id\n")
+[stderr] Parse error near line 1: no such column: id
+[stderr]   SELECT id 
+[stderr]          ^--- error here
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### multiline split across submissions: part 2 (fiddle_exec "  FROM t;\n")
+[stderr] Parse error near line 1: near "FROM": syntax error
+[stderr]   FROM t;
+[stderr]   ^--- error here
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### string containing a semicolon (fiddle_exec "INSERT INTO t(name) VALUES('semi;colon');\nSELECT * FROM t WHERE name = 'semi;colon';\n")
++----+------------+
+| id |    name    |
++----+------------+
+|  2 | semi;colon |
++----+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### error (fiddle_exec "SELECT * FROM no_such_table;\n")
+[stderr] Parse error near line 1: no such table: no_such_table
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### valid command after error (separate submission) (fiddle_exec "SELECT count(*) AS n FROM t;\n")
++---+
+| n |
++---+
+| 2 |
++---+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### error then valid in the SAME submission (fiddle_exec "SELECT * FROM no_such_table;\nSELECT 'after-error-same-submission' AS x;\n")
+[stderr] Parse error near line 1: no such table: no_such_table
++-----------------------------+
+|              x              |
++-----------------------------+
+| after-error-same-submission |
++-----------------------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".headers off\n")
+.headers off
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### after .headers off (table mode) (fiddle_exec "SELECT * FROM t;\n")
++---+------------+
+| 1 | from-shell |
+| 2 | semi;colon |
++---+------------+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### unknown dot-command (fiddle_exec ".nosuchcommand\n")
+.nosuchcommand
+
+[stderr] Error: unknown command or invalid arguments:  "nosuchcommand". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+

@@ -1,0 +1,6 @@
+resolved file:///Users/nick/Software/prototyper/pocs/sqlite-service/node_modules/@sqlite.org/sqlite-wasm/dist/node.mjs
+file db error: SQLite3Error: SQLITE_CANTOPEN: sqlite3 result code 14: unable to open database file
+no real file: NotFound: No such file or directory (os error 2): stat '/private/tmp/claude-501/-Users-nick-Software-prototyper/e8b82659-bf43-4471-96ae-914d307d7164/scratchpad/probe.db'
+resolved file:///Users/nick/Software/prototyper/pocs/sqlite-service/node_modules/@sqlite.org/sqlite-wasm/dist/node.mjs
+file db error: SQLite3Error: SQLITE_CANTOPEN: sqlite3 result code 14: unable to open database file
+no real file: NotFound: No such file or directory (os error 2): stat '/private/tmp/claude-501/-Users-nick-Software-prototyper/e8b82659-bf43-4471-96ae-914d307d7164/scratchpad/probe.db'

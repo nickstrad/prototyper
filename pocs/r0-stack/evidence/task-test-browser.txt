@@ -1,0 +1,38 @@
+$ deno task test:browser   (deno 2.7.14, 2026-10-08T02:23:59Z, uncommitted pocs/r0-stack)
+Task test:browser deno run -A npm:@playwright/test@1.62.0 test
+
+Running 1 test using 1 worker
+
+---- terminal buffer ----
+just-bash + Effect terminal. Try: tasks create "Build API"
+$ hello Alice
+Hello, Alice!
+$ tasks create "Build API"
+created 1: Build API
+$ tasks create 'Write tests'
+created 2: Write tests
+$ tasks list --json | jq '.[].title'
+"Build API"
+"Write tests"
+$ echo a | tr a-z A-Z
+A
+$ tasks complete 42
+tasks: task 42 not found
+[exit 1]
+$ sqlite3 :memory: 'select 1'
+bash: sqlite3: command not available in browser environments. Exclude 'sqlite3' from your commands o
+r use the Node.js bundle.
+[exit 127]
+$ tasks complete 42
+tasks: task 42 not found
+[exit 1]
+$ tasks create ""
+tasks: invalid input: title is required
+[exit 1]
+$
+---- console warnings/errors ----
+
+  ✓  1 [chromium] › e2e/terminal.spec.ts:19:1 › terminal runs just-bash + Effect commands (879ms)
+
+  1 passed (1.3s)
+exit=0

@@ -1,0 +1,114 @@
+connect calls recorded so far (shell only; app conn opened before wrapping): ["connectInternal -> 4968776"]
+
+app count before: [{"c":5}]
+
+app INSERT (6,'app_write',...) -> [{"Count":"1n"}]
+
+shell after app insert:
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            6 │
+└──────────────┘
+
+duckdb> SELECT * FROM events WHERE id = 6;
+┌────┬───────────┬─────────────────────┐
+│ id ┆ kind      ┆ ts                  │
+╞════╪═══════════╪═════════════════════╡
+│  6 ┆ app_write ┆ 2024-02-01T00:00:00 │
+└────┴───────────┴─────────────────────┘
+
+duckdb> 
+
+shell INSERT:
+duckdb> INSERT INTO events VALUES (7, 'shell_write', TIMESTAMP '2024-02-02 00:00:00');
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> 
+
+app after shell insert: [{"id":6,"kind":"app_write","ts":1706745600000},{"id":7,"kind":"shell_write","ts":1706832000000}]
+
+fresh db.connect() sees: [{"c":7}]
+
+shell BEGIN + INSERT (uncommitted):
+duckdb> BEGIN TRANSACTION;
+┌┐
+└┘
+
+duckdb> INSERT INTO events VALUES (8, 'shell_tx', NULL);
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            8 │
+└──────────────┘
+
+duckdb> 
+
+app during shell tx: [{"c":7}]
+
+app write during shell tx: [{"Count":"1n"}]
+
+shell COMMIT:
+duckdb> COMMIT;
+┌┐
+└┘
+
+duckdb> 
+
+app after shell commit: [{"id":6,"kind":"app_write"},{"id":7,"kind":"shell_write"},{"id":8,"kind":"shell_tx"},{"id":9,"kind":"app_during_tx"}]
+
+shell BEGIN + UPDATE id=1:
+duckdb> BEGIN;
+┌┐
+└┘
+
+duckdb> UPDATE events SET kind = 'shell_upd' WHERE id = 1;
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> 
+
+app UPDATE id=1 while shell tx open: "ERROR page.evaluate: Error: TransactionContext Error: Conflict on update!\n    at f.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser.mjs?v=931ef931:1:11938)"
+
+shell COMMIT:
+duckdb> COMMIT;
+┌┐
+└┘
+
+duckdb> SELECT id, kind FROM events WHERE id = 1;
+┌────┬───────────┐
+│ id ┆ kind      │
+╞════╪═══════════╡
+│  1 ┆ shell_upd │
+└────┴───────────┘
+
+duckdb> 
+
+shell DDL (CREATE TABLE notes) then app reads it:
+duckdb> CREATE TABLE notes AS SELECT 1 AS id, 'from shell' AS body;
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> 
+
+app: [{"id":1,"body":"from shell"}]
+
+connect calls total: ["connectInternal -> 4968776","connectInternal -> 5297992","disconnect(5297992)"]

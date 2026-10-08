@@ -1,0 +1,11 @@
+# input:
+#   SHOW TABLES;
+# output:
+duckdb> SHOW TABLES;
+┌────────┐
+│ name   │
+╞════════╡
+│ events │
+└────────┘
+
+duckdb> 

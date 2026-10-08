@@ -1,0 +1,31 @@
+# input:
+#   .help
+# output:
+duckdb> .help
+
+Commands:
+.clear                 Clear the shell.
+.examples              Example queries.
+.features              Shell features.
+.files list            List all files.
+.files add             Add files.
+.files download $FILE  Download a file.
+.files drop            Drop all files.
+.files drop $FILE      Drop a single file.
+.files track $FILE     Collect file statistics.
+.files register $FILE  Register OPFS file handle.
+.files paging $FILE    Show file paging.
+.files reads $FILE     Show file reads.
+.open $FILE            Open database file.
+.reset                 Reset the shell.
+.timer on|off          Turn query timer on or off.
+.output on|off         Print results on or off.
+
+Repositories:
+   https://github.com/duckdb/duckdb
+   https://github.com/duckdb/duckdb-wasm
+
+Feedback:
+   https://github.com/duckdb/duckdb-wasm/discussions
+
+duckdb> 

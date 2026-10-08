@@ -1,0 +1,7 @@
+# input:
+#   .tables
+# output:
+duckdb> .tables
+Unknown command: .tables
+
+duckdb> 

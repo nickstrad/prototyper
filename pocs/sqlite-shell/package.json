@@ -1,0 +1,13 @@
+{
+  "name": "poc-sqlite-shell",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "deno run --allow-net --allow-read --allow-env scripts/serve.ts",
+    "walkthrough": "node scripts/run-walkthrough.mjs"
+  },
+  "devDependencies": {
+    "@xterm/xterm": "^6.0.0",
+    "playwright": "^1.64.0"
+  }
+}

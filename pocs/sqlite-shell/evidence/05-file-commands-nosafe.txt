@@ -1,0 +1,250 @@
+# file-ish / host commands, argv ["/fiddle.sqlite3"]
+
+### input (fiddle_exec "CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);\nINSERT INTO t(name) VALUES('from-shell');\n")
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".databases\n")
+.databases
+
+main: /fiddle.sqlite3 r/w
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".dbinfo\n")
+.dbinfo
+
+database page size:  8192
+write format:        1
+read format:         1
+reserved bytes:      0
+file change counter: 2
+database page count: 2
+freelist page count: 0
+schema cookie:       1
+schema format:       4
+default cache size:  0
+autovacuum top root: 0
+incremental vacuum:  0
+text encoding:       1 (utf8)
+user version:        0
+application id:      0
+software version:    3054000
+number of tables:    1
+number of indexes:   0
+number of triggers:  0
+number of views:     0
+schema size:         49
+data version         3
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".vfsname\n")
+.vfsname
+
+unix-none
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".vfsinfo\n")
+.vfsinfo
+
+vfs.zName      = "unix-none"
+vfs.iVersion   = 3
+vfs.szOsFile   = 52
+vfs.mxPathname = 512
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".vfslist\n")
+.vfslist
+
+vfs.zName      = "unix-none"  <--- CURRENT
+vfs.iVersion   = 3
+vfs.szOsFile   = 52
+vfs.mxPathname = 512
+-----------------------------------
+vfs.zName      = "memdb"
+vfs.iVersion   = 2
+vfs.szOsFile   = 52
+vfs.mxPathname = 1024
+-----------------------------------
+vfs.zName      = "kvvfs"
+vfs.iVersion   = 2
+vfs.szOsFile   = 40
+vfs.mxPathname = 1024
+-----------------------------------
+vfs.zName      = "unix-excl"
+vfs.iVersion   = 3
+vfs.szOsFile   = 52
+vfs.mxPathname = 512
+-----------------------------------
+vfs.zName      = "unix-dotfile"
+vfs.iVersion   = 3
+vfs.szOsFile   = 52
+vfs.mxPathname = 512
+-----------------------------------
+vfs.zName      = "unix"
+vfs.iVersion   = 3
+vfs.szOsFile   = 52
+vfs.mxPathname = 512
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".dump\n")
+.dump
+
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE t(id INTEGER PRIMARY KEY, name TEXT);
+INSERT INTO t VALUES(1,'from-shell');
+COMMIT;
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".save /saved.db\n")
+.save /saved.db
+
+[stderr] Error: unknown command or invalid arguments:  "save". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".backup /backup.db\n")
+.backup /backup.db
+
+[stderr] Error: unknown command or invalid arguments:  "backup". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".output /out.txt\n")
+.output /out.txt
+
+[stderr] Error: unknown command or invalid arguments:  "output". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".once /once.txt\n")
+.once /once.txt
+
+[stderr] Error: unknown command or invalid arguments:  "once". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".read /saved.db\n")
+.read /saved.db
+
+[stderr] Error: unknown command or invalid arguments:  "read". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".import /x.csv t\n")
+.import /x.csv t
+
+[stderr] Error: unknown command or invalid arguments:  "import". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".open /other.db\n")
+.open /other.db
+
+[prompt after: "SQLite-3.54 other.db-> "]
+
+### input (fiddle_exec ".tables\n")
+.tables
+
+[prompt after: "SQLite-3.54 other.db-> "]
+
+### input (fiddle_exec ".open /fiddle.sqlite3\n")
+.open /fiddle.sqlite3
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".tables\n")
+.tables
+
+t
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".restore /saved.db\n")
+.restore /saved.db
+
+[stderr] Error: unknown command or invalid arguments:  "restore". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".shell ls\n")
+.shell ls
+
+[stderr] Error: unknown command or invalid arguments:  "shell". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".system ls\n")
+.system ls
+
+[stderr] Error: unknown command or invalid arguments:  "system". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".load foo\n")
+.load foo
+
+[stderr] Error: unknown command or invalid arguments:  "load". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".excel\n")
+.excel
+
+[stderr] Error: unknown command or invalid arguments:  "excel". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".www\n")
+.www
+
+[stderr] Error: unknown command or invalid arguments:  "www". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".cd /\n")
+.cd /
+
+[stderr] Error: unknown command or invalid arguments:  "cd". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".nonce x\n")
+.nonce x
+
+[stderr] Error: unknown command or invalid arguments:  "nonce". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".timer on\n")
+.timer on
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT 1;\n")
+╭───╮
+│ 1 │
+╞═══╡
+│ 1 │
+╰───╯
+Run Time: real 0.000000 user 0.000000 sys 0.000000
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".timer off\n")
+.timer off
+
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".quit\n")
+.quit
+
+[stderr] Error: unknown command or invalid arguments:  "quit". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT 'still alive after .quit';\n")
+╭─────────────────────────╮
+│  'still alive afte...   │
+╞═════════════════════════╡
+│ still alive after .quit │
+╰─────────────────────────╯
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec ".exit\n")
+.exit
+
+[stderr] Error: unknown command or invalid arguments:  "exit". Enter ".help" for help
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+
+### input (fiddle_exec "SELECT 'still alive after .exit';\n")
+╭─────────────────────────╮
+│  'still alive afte...   │
+╞═════════════════════════╡
+│ still alive after .exit │
+╰─────────────────────────╯
+[prompt after: "SQLite-3.54 fiddle.sqlite3-> "]
+

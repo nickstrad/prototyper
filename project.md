@@ -169,10 +169,10 @@ compatibility.
 Prefer established libraries over implementing functionality already available
 in maintained packages.
 
-Pin a verified Effect 4.0.x version and commit the dependency lockfile. Align
-any additional `@effect/*` packages with that release. Check the v4 API
-reference and stability annotations before choosing integrations; do not copy v3
-imports or APIs without verification.
+Pin Effect 4.0.2 (stable since 2026-10-01, LTS) and commit the dependency
+lockfile. Align any additional `@effect/*` packages with that release. Check the
+v4 API reference and stability annotations before choosing integrations; do not
+copy v3 imports or APIs without verification.
 
 ---
 
@@ -389,18 +389,23 @@ commands, mode formatting, or a replacement database CLI in toolkit code. In
 particular, do not fabricate `.schemas` as an alias.
 
 Verify shared live database access and command coverage before selecting a
-shell. If an upstream integration cannot satisfy these requirements, record the
-blocker rather than replacing it with a custom shell. The dedicated editor plan
-includes upstream targets, integration gates and browser verification.
+shell. Upstream web shells with a smaller command set than the native CLI are
+acceptable (for DuckDB, the web shell's own `.help` set plus `SHOW TABLES` and
+`DESCRIBE`); closing gaps with toolkit-authored commands is not. If an upstream
+integration cannot satisfy the sharing requirement, record the blocker rather
+than replacing it with a custom shell. The dedicated editor plan includes
+upstream targets, integration gates and browser verification.
 
 The editor must use the application's existing database service, not a second
 database. SQL writes and reset must notify the other interfaces after success.
 Raw SQL may bypass domain validation; failures must remain visible without
 breaking the editor or application.
 
-Build the common `DatabaseEditor` and its SQLite integration as a dedicated
-slice before the first SQLite application. Add the real upstream DuckDB shell in
-a second dedicated slice through a binding to that same component. See
+Build the app-side `DatabaseService` first (D1), then the common
+`DatabaseEditor` with its SQLite shell binding as a dedicated slice that runs in
+parallel with the first SQLite application; the application depends on the
+service, not on the shell. Add the real upstream DuckDB shell in a second
+dedicated slice through a binding to that same component. See
 `docs/database-editor-plan.md` for ownership and acceptance criteria. Prototypes
 only load their selected engine.
 

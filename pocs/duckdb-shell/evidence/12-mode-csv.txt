@@ -1,0 +1,7 @@
+# input:
+#   .mode csv
+# output:
+duckdb> .mode csv
+Unknown command: .mode
+
+duckdb> 

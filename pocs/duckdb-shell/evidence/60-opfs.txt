@@ -1,0 +1,75 @@
+OPFS entries before: []
+
+load 1 (seeded): duckdb v1.4.3 bundle=eh crossOriginIsolated=false path=opfs://poc.duckdb
+
+banner:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 
+
+app insert: [{"Count":"1n"}]
+
+duckdb> INSERT INTO events VALUES (101, 'opfs_shell', NULL);
+┌───────┐
+│ Count │
+╞═══════╡
+│     1 │
+└───────┘
+
+duckdb> SELECT database_name, path, readonly FROM duckdb_databases() WHERE NOT internal;
+┌───────────────┬───────────────────┬──────────┐
+│ database_name ┆ path              ┆ readonly │
+╞═══════════════╪═══════════════════╪══════════╡
+│ poc           ┆ opfs://poc.duckdb ┆    false │
+└───────────────┴───────────────────┴──────────┘
+
+duckdb> CHECKPOINT;
+┌┐
+└┘
+
+duckdb> 
+
+OPFS entries after checkpoint: ["poc.duckdb.wal:755","poc.duckdb:536576"]
+
+second tab FAILED: Error: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.:
+  pocError: Error: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.:
+    at f.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser.mjs?v=931ef931:1:11938)
+  status: ERROR Error: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.:
+
+after reload status: duckdb v1.4.3 bundle=eh crossOriginIsolated=false path=opfs://poc.duckdb err=undefined
+
+app read back: [{"id":1,"kind":"signup"},{"id":2,"kind":"login"},{"id":3,"kind":"purchase"},{"id":4,"kind":"login"},{"id":5,"kind":"logout"},{"id":100,"kind":"opfs_app"},{"id":101,"kind":"opfs_shell"}]
+
+shell read back:
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            7 │
+└──────────────┘
+
+duckdb> 
+
+app insert 102 (no checkpoint): [{"Count":"1n"}]
+
+after reload w/o checkpoint: [{"id":100,"kind":"opfs_app"},{"id":101,"kind":"opfs_shell"}] err=undefined
+
+console (filtered):
+[debug] File opfs://poc.duckdb does not exists yet, creating...
+[debug] File opfs://poc.duckdb.wal does not exists yet, creating...
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+
+tab2 console:
+Error: Failed to execute 'createSyncAccessHandle' on 'FileSystemFileHandle': Access Handles cannot be created if there is another open Access Handle or Writable stream associated with the same file.:
+    at t (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:760155)
+    at async Object.prepareFileHandles (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:760214)
+    at async ha.prepareDBFileHandle (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:743693)
+    at async xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:748155)
+    at async globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772389)

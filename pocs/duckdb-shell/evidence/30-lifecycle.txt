@@ -1,0 +1,121 @@
+baseline (no db, no shell): {"workers":0,"jsHeapMB":3,"domNodes":31,"listeners":16,"canvases":0} {"window":"__playwright_global_listeners_check__,auxclick,beforeunload,click,contextmenu,dblclick,mousedown,mousemove,mouseup,pointerdown,pointerup,touchcancel,touchend,touchstart","document":""}
+
+mounted #1: {"workers":1,"jsHeapMB":4.5,"domNodes":49,"listeners":51,"canvases":2} {"window":"__playwright_global_listeners_check__,auxclick,beforeunload,click,contextmenu,dblclick,mousedown,mousemove,mouseup,pointerdown,pointerup,resize,resize,touchcancel,touchend,touchstart","document":""}
+
+shell#1 works:
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            5 │
+└──────────────┘
+
+duckdb> 
+
+after unmount + db.terminate(): {"workers":0,"jsHeapMB":4.7,"domNodes":49,"listeners":48,"canvases":0} {"window":"__playwright_global_listeners_check__,auxclick,beforeunload,click,contextmenu,dblclick,mousedown,mousemove,mouseup,pointerdown,pointerup,resize,resize,touchcancel,touchend,touchstart","document":""}
+
+old Terminal instance still referenced by the shell wasm? term[0].element.isConnected=false
+
+re-mounted (term index 1): {"workers":1,"jsHeapMB":4.8,"domNodes":65,"listeners":83,"canvases":2}
+
+re-mounted terminal text:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 
+
+shell after remount:
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            5 │
+└──────────────┘
+
+duckdb> 
+
+after 5 more unmount/terminate/init/mount cycles: {"workers":1,"jsHeapMB":5.6,"domNodes":145,"listeners":243,"canvases":2} {"window":"__playwright_global_listeners_check__,auxclick,beforeunload,click,contextmenu,dblclick,mousedown,mousemove,mouseup,pointerdown,pointerup,resize,resize,resize,resize,resize,resize,resize,resize,resize,resize,resize,resize,resize,resize,touchcancel,touchend,touchstart","document":""} totalTerminalsCreated=7
+
+latest shell works:
+duckdb> SELECT count(*) FROM events;
+┌──────────────┐
+│ count_star() │
+╞══════════════╡
+│            5 │
+└──────────────┘
+
+duckdb> 
+
+double mount: tab-A=term6, tab-B=term7; {"workers":1,"jsHeapMB":5.8,"domNodes":165,"listeners":275,"canvases":4}
+
+tab-B initial text:
+DuckDB Web Shell
+Database: v1.4.3
+Package:  @duckdb/duckdb-wasm@1.32.0
+
+Connected to a local transient in-memory database.
+Enter .help for usage hints.
+
+duckdb> 
+
+after typing in tab-A — tab-A delta:
+
+--- tab-B delta:
+SELECT 'typed-in-A' AS who;
+┌────────────┐
+│ who        │
+╞════════════╡
+│ typed-in-A │
+└────────────┘
+
+duckdb> 
+
+after typing in tab-B — tab-A delta:
+
+--- tab-B delta:
+SELECT 'typed-in-B' AS who;
+┌────────────┐
+│ who        │
+╞════════════╡
+│ typed-in-B │
+└────────────┘
+
+duckdb> 
+
+typing in a still-mounted shell after db.terminate():
+SELECT 1;
+
+final: {"workers":0,"jsHeapMB":5.8,"domNodes":175,"listeners":272,"canvases":4}
+
+console (filtered):
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:DISCONNECT,4968776
+[error] cannot send a message since the worker is not set!:TOKENIZE,S
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SE
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SEL
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELE
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELEC
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELECT
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELECT 
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELECT 1
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:TOKENIZE,SELECT 1;
+[pageerror] Cannot read properties of undefined (reading 'offsets')
+[error] cannot send a message since the worker is not set!:RUN_QUERY,4968776,SELECT 1;
+[pageerror] Cannot read properties of undefined (reading 'length')

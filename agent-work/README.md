@@ -32,9 +32,9 @@ missing evidence. Never reclaim automatically based on stale timestamps.
 ## Checkpoint rules
 
 Copy `templates/run.md` into the assigned run's `progress.md`. Update it after
-each meaningful chunk or check, before blockers/stops, and at least every ten
-minutes during sustained work. Append timestamped events to `events.md`; retain
-older outcomes when a later result changes them. Use timestamps with an offset.
+each meaningful chunk or check and before blockers/stops. Append timestamped
+events to `events.md`; retain older outcomes when a later result changes them.
+Use timestamps with an offset.
 
 On stop, save `handoff.md`. On finish, save `report.md`. Include exact commands,
 exit status and evidence paths, not just “tests passed.” Identify checks not run
@@ -50,7 +50,9 @@ who saves them under `items/<id>/reviews/`.
 
 The role files mention `deno task build`, `deno task check`, and
 `deno task test`. These are planned tasks established by R0, not commands
-available in the current Hello World repository. For R0, use the commands in its
-brief while bootstrapping them. For later items, execute applicable checks plus
-their acceptance commands. Do not run shared output or lockfile mutations
+available in the current Hello World repository. Proof-of-concept code under
+`pocs/` has its own per-directory configuration and is reference material, not
+part of the toolkit task surface. For R0, use the commands in its brief while
+bootstrapping them. For later items, execute applicable checks plus their
+acceptance commands. Do not run shared output or lockfile mutations
 concurrently.

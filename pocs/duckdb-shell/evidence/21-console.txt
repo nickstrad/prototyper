@@ -1,0 +1,19 @@
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[warning] using deprecated parameters for the initialization function; pass a single object instead
+[log] Error: Parser Error: syntax error at or near "SELEC"
+
+LINE 1: SELEC oops FROM events;
+        ^
+
+LINE 1: SELEC oops FROM events;
+        ^
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738642)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+    at globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772397)
+[warning] Buffering missing file: events.csv
+[warning] Buffering missing file: /dev/stdout
+[log] Error: TransactionContext Error: Conflict on update!
+    at ha.runQuery (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:738642)
+    at xo.onMessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:749263)
+    at globalThis.onmessage (http://localhost:5181/node_modules/@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js:1:772397)
