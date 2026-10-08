@@ -33,6 +33,8 @@ Claude Fable 5.1 TUI in tmux session work. **Next: R0 build completes, then
 independent review (Opus high).** |
 
 | 2026-10-07 | R0 landed: commit 327d7c6 (30 files). Review verdict nits only; all acceptance criteria verified. Claim released. **Next: D1 and DB0 dispatch (Wave 1, parallel on R0 worker skeleton).** |
+| 2026-10-08 | D1 + DB0 dispatched by Twin (orchestrator) for Wave 1 parallel build: briefs at `agent-work/items/D1/brief.md` and `agent-work/items/DB0/brief.md`, runs run-20261008-d1-01 / run-20261008-db0-01, base R0 327d7c6. Main TUI agent to dispatch both as subagents. **Next: builds complete, then independent reviews.** |
+| 2026-10-08 | D1 landed: commit 44f4227 (20 files). Review verdict PASS (Opus 5.5 high, all acceptance criteria independently reproduced); M1/M2 coordination items resolved by orchestrator. Claim released. **Next: R1 and D2 dispatch (Wave 2, parallel on D1).** |
 ## 1. Goal
 
 Deliver a static browser playground in which portable TypeScript application
