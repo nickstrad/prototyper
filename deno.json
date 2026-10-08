@@ -29,7 +29,9 @@
     "@playwright/test": "npm:@playwright/test@1.62.0",
     "@std/assert": "jsr:@std/assert@1.0.19",
     "@std/http": "jsr:@std/http@1.0.19",
-    "@sqlite.org/sqlite-wasm": "npm:@sqlite.org/sqlite-wasm@3.53.4-build2"
+    "@sqlite.org/sqlite-wasm": "npm:@sqlite.org/sqlite-wasm@3.53.4-build2",
+    "@duckdb/duckdb-wasm": "npm:@duckdb/duckdb-wasm@1.32.0",
+    "@duckdb/duckdb-wasm-shell": "npm:@duckdb/duckdb-wasm-shell@1.32.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
@@ -48,6 +50,8 @@
     "test-results",
     "playwright-report",
     "pocs",
-    "public/vendor"
+    "public/vendor",
+    "dist-*",
+    "test-results-*"
   ]
 }

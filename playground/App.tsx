@@ -14,6 +14,7 @@ import {
   SqliteWorkbench,
   workbenchPersistenceFromUrl,
 } from "../packages/database/sqlite-workbench.tsx"; // D1 workbench
+import { SqliteShellWorkbench } from "../packages/database-editor/sqlite-shell-workbench.tsx"; // DB0 editor
 import { makeTasksRuntime } from "../packages/terminal/examples/tasks.ts";
 import { exampleCommands } from "../packages/terminal/examples/tasks-command.ts";
 import { createShell } from "../packages/terminal/shell.ts";
@@ -125,6 +126,9 @@ export function App() {
         onHooks={exposeWorkbenchHooks}
       />
       {/* ---- end D1 workbench ---- */}
+      {/* ---- DB0 editor ---- */}
+      <SqliteShellWorkbench />
+      {/* ---- end DB0 editor ---- */}
     </main>
   );
 }

@@ -28,3 +28,7 @@ playwright-report/
 # Per-builder build/test outputs (plan.md §5 concurrent runs)
 dist-*/
 test-results-*/
+
+# DuckDB wasm bundle + self-hosted extensions are fetched by scripts/fetch-duckdb-extensions* (D2); keep only the provenance note
+public/vendor/duckdb/*
+!public/vendor/duckdb/PROVENANCE.md

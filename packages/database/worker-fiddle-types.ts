@@ -163,3 +163,113 @@ export interface FiddleD1Sqlite3 {
   ): Promise<FiddleSahPool>;
 }
 // ---- end exec family ----
+
+// ---- shell family (DB0) ----
+// Typings for the raw WASM exports and wasm helpers the shell family uses to
+// run `fiddle_exec`, the upstream `sqlite3_complete` completeness check and
+// the DB0-local structured ops on the shell's own sqlite3* (raw prepare/step/
+// column_* exports, as pocs/sqlite-shell/web/shell-worker.js did).
+
+export interface FiddleShellExports {
+  fiddle_exec(pSql: number): void;
+  fiddle_db_handle(): number;
+  fiddle_reset_db(): void;
+  fiddle_interrupt(): void;
+  sqlite3_complete(pSql: number): number;
+  sqlite3_prepare_v2(
+    pDb: number,
+    pSql: number,
+    nByte: number,
+    ppStmt: number,
+    pzTail: number,
+  ): number;
+  sqlite3_step(pStmt: number): number;
+  sqlite3_finalize(pStmt: number): number;
+  sqlite3_column_count(pStmt: number): number;
+  sqlite3_column_name(pStmt: number, i: number): number;
+  sqlite3_column_type(pStmt: number, i: number): number;
+  sqlite3_column_int64(pStmt: number, i: number): bigint;
+  sqlite3_column_double(pStmt: number, i: number): number;
+  sqlite3_column_text(pStmt: number, i: number): number;
+  sqlite3_column_blob(pStmt: number, i: number): number;
+  sqlite3_column_bytes(pStmt: number, i: number): number;
+  sqlite3_bind_parameter_count(pStmt: number): number;
+  sqlite3_bind_null(pStmt: number, i: number): number;
+  sqlite3_bind_int64(pStmt: number, i: number, v: bigint): number;
+  sqlite3_bind_double(pStmt: number, i: number, v: number): number;
+  sqlite3_bind_text(
+    pStmt: number,
+    i: number,
+    pText: number,
+    nBytes: number,
+    destructor: number,
+  ): number;
+  sqlite3_bind_blob(
+    pStmt: number,
+    i: number,
+    pBlob: number,
+    nBytes: number,
+    destructor: number,
+  ): number;
+  sqlite3_stmt_readonly(pStmt: number): number;
+  sqlite3_errmsg(pDb: number): number;
+  sqlite3_total_changes64(pDb: number): bigint;
+  sqlite3_last_insert_rowid(pDb: number): bigint;
+  sqlite3_get_autocommit(pDb: number): number;
+}
+
+export interface FiddleShellWasm {
+  readonly exports: FiddleShellExports;
+  readonly ptr: { readonly size: number };
+  /** With `returnWithLength`, returns `[ptr, byteLength]`. */
+  allocCString(text: string, returnWithLength: true): [number, number];
+  allocCString(text: string): number;
+  allocFromTypedArray(bytes: Uint8Array): number;
+  alloc(n: number): number;
+  dealloc(ptr: number): void;
+  peekPtr(ptr: number): number;
+  pokePtr(ptr: number, value: number): void;
+  heap8u(): Uint8Array;
+  cstrToJs(ptr: number): string;
+  xWrap(
+    name: string,
+    result: string | undefined,
+    args: readonly string[],
+  ): (...args: unknown[]) => unknown;
+}
+
+export interface FiddleShellCapi {
+  sqlite3_js_db_export(pDb: number): Uint8Array;
+  sqlite3_backup_init(
+    pDest: number,
+    destName: string,
+    pSource: number,
+    sourceName: string,
+  ): number;
+  sqlite3_backup_step(pBackup: number, nPage: number): number;
+  sqlite3_backup_finish(pBackup: number): number;
+  sqlite3_deserialize(
+    pDb: number,
+    schema: string,
+    pData: number,
+    nData: number,
+    nBuffer: number,
+    flags: number,
+  ): number;
+  sqlite3_errmsg(pDb: number): string;
+  readonly SQLITE_DESERIALIZE_FREEONCLOSE: number;
+  readonly SQLITE_DESERIALIZE_RESIZEABLE: number;
+  readonly SQLITE_WASM_DEALLOC: number;
+}
+
+export interface FiddleShellSqlite3 {
+  readonly capi: FiddleShellCapi;
+  readonly wasm: FiddleShellWasm;
+  readonly oo1: {
+    readonly DB: new (
+      filename: string,
+      flags?: string,
+    ) => { readonly pointer: number; close(): void };
+  };
+}
+// ---- end shell family ----

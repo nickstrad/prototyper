@@ -125,7 +125,8 @@ test("engine worker loads the vendored Fiddle module and serves both families", 
     message: expect.stringContaining("no_such_table"),
   });
 
-  // shell family: stubbed in R0; emits stderr output and the real prompt.
+  // shell family (DB0): a dot command reaches the real upstream shell, which
+  // echoes it on stdout and answers with the live prompt.
   await page.evaluate(() =>
     globalThis.window.__playground!.engine.shell({
       family: "shell",
@@ -145,8 +146,8 @@ test("engine worker loads the vendored Fiddle module and serves both families", 
       expect.objectContaining({
         family: "shell",
         op: "output",
-        stream: "stderr",
-        text: expect.stringContaining("not implemented in R0"),
+        stream: "stdout",
+        text: ".tables",
       }),
       expect.objectContaining({
         family: "shell",
