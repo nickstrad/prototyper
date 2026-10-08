@@ -18,16 +18,17 @@
     "npm:@duckdb/duckdb-wasm@1.32.0": "1.32.0",
     "npm:@playwright/test@1.62.0": "1.62.0",
     "npm:@sqlite.org/sqlite-wasm@3.53.4-build2": "3.53.4-build2",
+    "npm:@types/node@22.20.5": "22.20.5",
     "npm:@types/react-dom@19.3.0": "19.3.0_@types+react@19.3.0",
     "npm:@types/react@19.3.0": "19.3.0",
-    "npm:@vitejs/plugin-react@6.1.2": "6.1.2_vite@8.3.3",
+    "npm:@vitejs/plugin-react@6.1.2": "6.1.2_vite@8.3.3__@types+node@22.20.5_@types+node@22.20.5",
     "npm:@xterm/xterm@6.0.0": "6.0.0",
     "npm:effect@4.0.2": "4.0.2",
     "npm:fast-check@4.10.2": "4.10.2",
     "npm:just-bash@3.6.0": "3.6.0",
     "npm:react-dom@19.3.0": "19.3.0_react@19.3.0",
     "npm:react@19.3.0": "19.3.0",
-    "npm:vite@8.3.3": "8.3.3"
+    "npm:vite@8.3.3": "8.3.3_@types+node@22.20.5"
   },
   "jsr": {
     "@std/assert@1.0.19": {
@@ -237,6 +238,12 @@
         "undici-types"
       ]
     },
+    "@types/node@22.20.5": {
+      "integrity": "sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
     "@types/react-dom@19.3.0_@types+react@19.3.0": {
       "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==",
       "dependencies": [
@@ -249,7 +256,7 @@
         "csstype"
       ]
     },
-    "@vitejs/plugin-react@6.1.2_vite@8.3.3": {
+    "@vitejs/plugin-react@6.1.2_vite@8.3.3__@types+node@22.20.5_@types+node@22.20.5": {
       "integrity": "sha512-fhJNGUdscQa4HkI0xFxwonWyhnVReCPDbXI7FH7jmzpnVCrFQI7PRrhWecO263610vOrs9tr2Y4xcf8uAdFxbw==",
       "dependencies": [
         "@rolldown/pluginutils",
@@ -274,7 +281,7 @@
         "@swc/helpers",
         "@types/command-line-args",
         "@types/command-line-usage",
-        "@types/node",
+        "@types/node@20.19.43",
         "command-line-args",
         "command-line-usage",
         "flatbuffers",
@@ -915,9 +922,10 @@
     "util-deprecate@1.0.2": {
       "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="
     },
-    "vite@8.3.3": {
+    "vite@8.3.3_@types+node@22.20.5": {
       "integrity": "sha512-cTAldKPImjg6c+gk48U19POPn3GCBzZwpdsN8ZMEEcbpes+6/wvfqUd0C2y3qYY4wsj8PwgFwrZ/1jBPVttMSg==",
       "dependencies": [
+        "@types/node@22.20.5",
         "lightningcss",
         "picomatch",
         "postcss",
@@ -926,6 +934,9 @@
       ],
       "optionalDependencies": [
         "fsevents@2.3.3"
+      ],
+      "optionalPeers": [
+        "@types/node@22.20.5"
       ],
       "bin": true
     },
@@ -976,6 +987,7 @@
       "npm:@duckdb/duckdb-wasm@1.32.0",
       "npm:@playwright/test@1.62.0",
       "npm:@sqlite.org/sqlite-wasm@3.53.4-build2",
+      "npm:@types/node@22.20.5",
       "npm:@types/react-dom@19.3.0",
       "npm:@types/react@19.3.0",
       "npm:@vitejs/plugin-react@6.1.2",

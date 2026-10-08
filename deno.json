@@ -31,7 +31,8 @@
     "@std/http": "jsr:@std/http@1.0.19",
     "@sqlite.org/sqlite-wasm": "npm:@sqlite.org/sqlite-wasm@3.53.4-build2",
     "@duckdb/duckdb-wasm": "npm:@duckdb/duckdb-wasm@1.32.0",
-    "@duckdb/duckdb-wasm-shell": "npm:@duckdb/duckdb-wasm-shell@1.32.0"
+    "@duckdb/duckdb-wasm-shell": "npm:@duckdb/duckdb-wasm-shell@1.32.0",
+    "@types/node": "npm:@types/node@22.20.5"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
