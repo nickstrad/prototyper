@@ -32,6 +32,7 @@ an offset when time matters.
 Claude Fable 5.1 TUI in tmux session work. **Next: R0 build completes, then
 independent review (Opus high).** |
 
+| 2026-10-07 | R0 landed: commit 327d7c6 (30 files). Review verdict nits only; all acceptance criteria verified. Claim released. **Next: D1 and DB0 dispatch (Wave 1, parallel on R0 worker skeleton).** |
 ## 1. Goal
 
 Deliver a static browser playground in which portable TypeScript application
