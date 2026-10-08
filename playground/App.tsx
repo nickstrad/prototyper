@@ -21,6 +21,7 @@ import {
   playgroundTaskManagerLayer,
   TaskManagerApp,
 } from "../prototypes/task-manager/App.tsx"; // R1 task manager
+import { ApiExplorer, exposeApiExplorerHooks } from "./api/ApiExplorer.tsx"; // R3 api explorer
 import { makeTasksRuntime } from "../packages/terminal/examples/tasks.ts";
 import { exampleCommands } from "../packages/terminal/examples/tasks-command.ts";
 import { createShell } from "../packages/terminal/shell.ts";
@@ -144,6 +145,12 @@ export function App() {
         onHooks={exposeTaskManagerHooks}
       />
       {/* ---- end R1 task manager ---- */}
+      {/* ---- R3 api explorer ---- */}
+      <ApiExplorer
+        layer={playgroundTaskManagerLayer}
+        onHooks={exposeApiExplorerHooks}
+      />
+      {/* ---- end R3 api explorer ---- */}
     </main>
   );
 }
