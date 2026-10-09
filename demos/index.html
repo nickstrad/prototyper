@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototyper demo gallery</title>
+    <style>
+    body {
+      font: 18px/1.6 system-ui, sans-serif;
+      margin: auto;
+      padding: 24px;
+      max-width: 900px;
+      color: #172b40;
+      background: #f3f5f8;
+    }
+    li {
+      margin: 18px 0;
+    }
+    a {
+      color: #2354a2;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Prototyper demo gallery</h1>
+    <p>Five applications with live SQL shells. All computation stays in your browser. Reload any demo to restore its seed.</p>
+    <ul id="demos"></ul>
+    <a href="/">Toolkit playground</a>
+    <script type="module" src="./gallery.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  background: #f3f5f8;
+  color: #172b40;
+  font-family: system-ui, sans-serif;
+}
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 28px;
+}
+header,
+aside {
+  margin-bottom: 24px;
+}
+h1 {
+  font-size: 36px;
+  margin: 12px 0;
+}
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+code {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  main {
+    padding: 12px;
+  }
+  h1 {
+    font-size: 28px;
+  }
+}
+
+/* Keep wide upstream shell output reachable on narrow screens. */
+@media (max-width: 600px) {
+  [data-testid="db-console"] {
+    overflow-x: auto !important;
+  }
+}

@@ -1,26 +1,35 @@
-# Prototype demos
+# Demo gallery
 
-Planned final examples; runnable demo applications have not been built yet. The
-implementation slices and executed acceptance checks will be recorded in
-`plan.md` and `agent-work/`.
+Run `deno task dev` and open <http://127.0.0.1:5173/demos/>. For asset-only
+hosting, run `deno task build` then `deno task serve:static` and open
+<http://127.0.0.1:4173/demos/>. All five HTML entry points are included in the
+root build. Serve the complete output at the origin root.
 
-| Directory    | Example                                      | Engine | Views                                | Slice                       |
-| ------------ | -------------------------------------------- | ------ | ------------------------------------ | --------------------------- |
-| `cli/`       | Inventory commands and JSON pipelines        | SQLite | Terminal, Database                   | R10                         |
-| `api/`       | Bookmark endpoints exercised in the explorer | SQLite | API, Database                        | R11                         |
-| `web/`       | Notes CRUD in React                          | SQLite | Application, Database                | R12                         |
-| `combined/`  | Task manager across all interfaces           | SQLite | Application, Terminal, API, Database | R13                         |
-| `analytics/` | Queries over seeded event data               | DuckDB | Application, Database                | R6 foundation, R14 delivery |
+| URL                 | Example         | Engine | Views                                | Walkthrough                      |
+| ------------------- | --------------- | ------ | ------------------------------------ | -------------------------------- |
+| `/demos/cli/`       | Inventory       | SQLite | Terminal, Database                   | [Inventory](cli/README.md)       |
+| `/demos/api/`       | Bookmarks       | SQLite | API, Database                        | [Bookmarks](api/README.md)       |
+| `/demos/web/`       | Notes           | SQLite | Application, Database                | [Notes](web/README.md)           |
+| `/demos/combined/`  | Task manager    | SQLite | Application, Terminal, API, Database | [Tasks](combined/README.md)      |
+| `/demos/analytics/` | Event analytics | DuckDB | Application, Database                | [Analytics](analytics/README.md) |
 
-Every demo will have deterministic seed data, the selected engine's first-class
-shared `DatabaseEditor`, a short README walkthrough, and automated browser
-verification. It embeds the actual upstream SQLite/DuckDB shell against that
-demo's live database: real `.mode`/`.schema` handling for SQLite, and the DuckDB
-web shell's own command set plus `SHOW TABLES`/`DESCRIBE` for DuckDB (plan.md
-Q12). Reuse the same host component with the selected upstream shell binding.
-Editor mutations must be visible through enabled application interfaces. Use
-reusable toolkit components instead of copying terminal/API/editor plumbing.
+Each demo starts with deterministic data in a memory database. Reload discards
+edits. The Database view embeds the actual upstream engine shell against the
+same service used by the other views. SQLite supports its own dot commands;
+DuckDB supports its upstream web shell commands and SQL such as `SHOW TABLES`
+and `DESCRIBE events`.
 
-R14 builds and verifies a gallery containing all five demos on static hosting.
-Keep actual run/build instructions synchronized with the implemented task
-surface.
+`tests/static/gallery.spec.ts` checks the five entries independently of the
+registry, blocks external network traffic, executes mutations through each
+interface, and checks the live shells. The root browser suite includes these
+checks in both dev and production modes. Run one Playwright worker:
+
+```sh
+deno task test:static --workers 1
+```
+
+Downloads occur during setup/build only. The API explorer uses an in-process
+fetch router; bookmark URLs are stored data, not outgoing requests. SQLite,
+DuckDB, workers, shell WASM, and DuckDB extensions are served locally. There is
+no service-worker installation or cached-site guarantee after shutting down the
+asset server.

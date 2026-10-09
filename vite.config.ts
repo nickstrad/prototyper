@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import process from "node:process";
+import { demos } from "./demos/registry.ts";
 
 // Split vendor chunks so the size of each dependency is visible in the build
 // output and in docs/integrations.md.
@@ -17,7 +19,19 @@ export default defineConfig({
   // with importScripts(), which module workers do not support.
   worker: { format: "iife" },
   build: {
+    outDir: process.env.PW_DIST ?? "dist",
     chunkSizeWarningLimit: 2000,
-    rollupOptions: { output: { manualChunks: vendorChunk } },
+    rollupOptions: {
+      input: [
+        "index.html",
+        "demos/index.html",
+        // Existing browser acceptance fixtures must also be plain static pages.
+        "tests/native/browser.html",
+        "tests/persistence/sqlite/index.html",
+        "tests/transfer/index.html",
+        ...demos.map((demo) => `demos/${demo.id}/index.html`),
+      ],
+      output: { manualChunks: vendorChunk },
+    },
   },
 });
